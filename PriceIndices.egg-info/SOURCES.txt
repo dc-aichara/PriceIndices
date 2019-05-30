@@ -1,0 +1,10 @@
+README.md
+setup.cfg
+setup.py
+PriceIndices/__init__.py
+PriceIndices/price_indicators.py
+PriceIndices.egg-info/PKG-INFO
+PriceIndices.egg-info/SOURCES.txt
+PriceIndices.egg-info/dependency_links.txt
+PriceIndices.egg-info/requires.txt
+PriceIndices.egg-info/top_level.txt
