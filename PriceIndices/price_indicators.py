@@ -8,7 +8,7 @@ from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
 
 
-class PriceIndices:
+class price:
     __Crypto_Price_Base_URL = 'https://coinmarketcap.com/currencies/'
 
     def __init__(self, price_url=__Crypto_Price_Base_URL):
@@ -53,7 +53,10 @@ class PriceIndices:
 
             print('Please, check inputs. Coin id, and dates are strings. Date format is "YYYYMMDD"')
 
-    def get_bvol_index(self, price_data):
+
+class indices:
+
+    def get_bvol_index( price_data):
 
         """ Calculate Cryptocureency price's 30 days volatile index """
         try:
@@ -69,7 +72,7 @@ class PriceIndices:
         except Exception as e:
             print(e)
 
-    def get_bvol_graph(self, bvol_data):
+    def get_bvol_graph( bvol_data):
 
         """Make a line graph of bvol index with respect to time"""
         try:
@@ -103,7 +106,7 @@ class PriceIndices:
         except Exception as e:
             print(e)
 
-    def get_rsi(self, price_data):
+    def get_rsi(price_data):
 
         """calculate Relative Strength Index"""
         try:
@@ -132,7 +135,7 @@ class PriceIndices:
         except Exception as e:
             print(e)
 
-    def get_rsi_graph(self, rsi_data):
+    def get_rsi_graph(rsi_data):
         try:
             df = rsi_data
             fig, ax = plt.subplots(figsize=(16, 12))
