@@ -51,8 +51,7 @@ class price:
         try:
             return self.__request(url)
         except Exception as e:
-            return e)
-
+            print(e)
             print('Please, check inputs. Coin id, and dates are strings. Date format is "YYYYMMDD"')
 
 
@@ -172,13 +171,21 @@ class indices:
         except Exception as e:
             return e
 
-    def bollinger_bands(price_data):
+    def get_bollinger_bands(price_data, days):
+
+        """ Calculate Bollinger Bands """
         try:
             df = price_data
-            df['SMA'] = df['price'].rolling(20).mean()
-            df['SD'] = df['price'].rolling(20).std()
+            df['SMA'] = df['price'].rolling(days).mean()
+            df['SD'] = df['price'].rolling(days).std()
             df['pluse'] = df['SMA'] + df['SD']*2
             df['minus'] = df['SMA'] - df['SMA']*2
+
+            fig, ax = plt.subplots(figsize=(20, 16))
+            plt.plot(df['date'], df['pluse'], color='g')
+            plt.plot(df['date'], df['minus'], color='g')
+            plt.plot(df['date'], df['price'], color='orange')
+            plt.show()
 
             return df
         except Exception as e:
