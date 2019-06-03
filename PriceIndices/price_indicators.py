@@ -51,7 +51,7 @@ class price:
         try:
             return self.__request(url)
         except Exception as e:
-            print(e)
+            return e)
 
             print('Please, check inputs. Coin id, and dates are strings. Date format is "YYYYMMDD"')
 
@@ -72,7 +72,7 @@ class indices:
             df = df.sort_values(by='date', ascending=False).reset_index(drop=True)
             return df
         except Exception as e:
-            print(e)
+            return e
 
     def get_bvol_graph( bvol_data):
 
@@ -106,7 +106,7 @@ class indices:
 
             return plt.show()
         except Exception as e:
-            print(e)
+            return  e
 
     def get_rsi(price_data):
 
@@ -135,7 +135,7 @@ class indices:
 
             return df
         except Exception as e:
-            print(e)
+            return e
 
     def get_rsi_graph(rsi_data):
         try:
@@ -170,5 +170,17 @@ class indices:
 
             return plot.show()
         except Exception as e:
-            print(e)
+            return e
+
+    def bollinger_bands(price_data):
+        try:
+            df = price_data
+            df['SMA'] = df['price'].rolling(20).mean()
+            df['SD'] = df['price'].rolling(20).std()
+            df['pluse'] = df['SMA'] + df['SD']*2
+            df['minus'] = df['SMA'] - df['SMA']*2
+
+            return df
+        except Exception as e:
+            return e
 
