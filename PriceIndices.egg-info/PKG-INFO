@@ -1,12 +1,12 @@
 Metadata-Version: 2.1
 Name: PriceIndices
-Version: 0.2
+Version: 0.3
 Summary: This package can be useful to get historical price data of cryptocurrencies from CoinMarketCap, and calculate & plot different indicators.
 Home-page: https://github.com/dc-aichara/Price-Indices
 Author: Dayal Chand Aichara
 Author-email: dc.aichara@gmail.com
 License: MIT
-Download-URL: https://github.com/dc-aichara/PriceIndices/archive/v-0.2.tar.gz
+Download-URL: https://github.com/dc-aichara/PriceIndices/archive/v-0.3.tar.gz
 Description: 
         ## Installation 
         
@@ -64,13 +64,13 @@ Description:
         3 2019-06-19   9273.52    0.608403
         4 2019-06-18   9081.76    0.604174
         
-        >>> indices.get_bvol_graph(df_bvol)  # Plot Volatility Index 
+        >>> Indices.get_bvol_graph(df_bvol)  # Plot Volatility Index 
         
         """
         This will return a plot of BVOL index against time also save volatility index plot in your working directory as 'bvol_index.png'
         """
         
-        >>> df_rsi = indices.get_rsi(df)   # Calculate RSI
+        >>> df_rsi = Indices.get_rsi(df)   # Calculate RSI
         
         >>> print(df_rsi.tail())
                    date   price  price_change   gain   loss  gain_average  loss_average        RS      RSI_1  RS_Smooth      RSI_2
@@ -80,7 +80,7 @@ Description:
         2220 2013-04-29  144.54          5.54   5.54   0.00      3.878571      1.981429  1.957462  66.187226   2.206422  68.812592
         2221 2013-04-28  134.21        -10.33   0.00  10.33      3.878571      2.506429  1.547449  60.745050   1.397158  58.283931
         
-        >>> indices.get_rsi_graph(df_rsi)  # Plot RSI
+        >>> Indices.get_rsi_graph(df_rsi)  # Plot RSI
         
         """
         This will return a plot of RSI against time and also save RSI plot in your working directory as 'rsi.png'
@@ -104,7 +104,19 @@ Description:
         [MIT](https://choosealicense.com/licenses/mit/) © [Dayal Chand Aichara](https://github.com/dc-aichara)
         
         
-Keywords: Volatility,blockchain,cryptocurrency,Price,trading
+        ### Disclaimer: 
+        ```
+        All content provided here, is for your general information only, procured  from third party sources.
+        I make no warranties of any kind in relation to this content, including but  not limited to accuracy
+        and updatedness. No part of the content that I provide  constitutes  financial  advice, legal advice 
+        or any other form of advice meant for your specific reliance for any purpose. Any use or reliance on
+        my content is solely at your own risk  and  discretion. You should conduct your own research, review, 
+        analyse and  verify my content  before relying  on them. Trading is a highly risky activity that can 
+        lead to  major  losses, please  therefore  consult your financial advisor before making any decision.
+        No content on this Site is meant to be a solicitation or offer.
+        ```
+        
+Keywords: Volatility,blockchain,cryptocurrency,Price,trading,CoinMarketCap
 Platform: UNKNOWN
 Classifier: Development Status :: 4 - Beta
 Classifier: Intended Audience :: Education
