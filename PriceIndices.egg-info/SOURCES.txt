@@ -2,6 +2,7 @@ README.md
 setup.cfg
 setup.py
 PriceIndices/__init__.py
+PriceIndices/crypto_history.py
 PriceIndices/price_indicators.py
 PriceIndices.egg-info/PKG-INFO
 PriceIndices.egg-info/SOURCES.txt
