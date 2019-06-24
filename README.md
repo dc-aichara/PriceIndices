@@ -55,13 +55,13 @@ from PriceIndices import MarketHistory, Indices
 3 2019-06-19   9273.52    0.608403
 4 2019-06-18   9081.76    0.604174
 
->>> indices.get_bvol_graph(df_bvol)  # Plot Volatility Index 
+>>> Indices.get_bvol_graph(df_bvol)  # Plot Volatility Index 
 
 """
 This will return a plot of BVOL index against time also save volatility index plot in your working directory as 'bvol_index.png'
 """
 
->>> df_rsi = indices.get_rsi(df)   # Calculate RSI
+>>> df_rsi = Indices.get_rsi(df)   # Calculate RSI
 
 >>> print(df_rsi.tail())
            date   price  price_change   gain   loss  gain_average  loss_average        RS      RSI_1  RS_Smooth      RSI_2
@@ -71,7 +71,7 @@ This will return a plot of BVOL index against time also save volatility index pl
 2220 2013-04-29  144.54          5.54   5.54   0.00      3.878571      1.981429  1.957462  66.187226   2.206422  68.812592
 2221 2013-04-28  134.21        -10.33   0.00  10.33      3.878571      2.506429  1.547449  60.745050   1.397158  58.283931
 
->>> indices.get_rsi_graph(df_rsi)  # Plot RSI
+>>> Indices.get_rsi_graph(df_rsi)  # Plot RSI
 
 """
 This will return a plot of RSI against time and also save RSI plot in your working directory as 'rsi.png'
