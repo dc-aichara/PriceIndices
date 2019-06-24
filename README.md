@@ -105,5 +105,4 @@ my content is solely at your own risk  and  discretion. You should conduct your 
 analyse and  verify my content  before relying  on them. Trading is a highly risky activity that can 
 lead to  major  losses, please  therefore  consult your financial advisor before making any decision.
 No content on this Site is meant to be a solicitation or offer.
-
 ```

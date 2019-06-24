@@ -41,8 +41,6 @@ class MarketHistory:
             print(e)
             print('Please, check inputs. Coin id, and dates are strings. Date format is "YYYYMMDD"')
 
-
-
     def get_price(self, coin_id, start_date, end_date):
 
         """Get historical price data of a cryptocurrency from CoinMarketCap.
