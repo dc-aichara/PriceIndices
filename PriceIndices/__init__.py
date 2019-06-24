@@ -1,4 +1,6 @@
-from .price_indicators import price, indices
+from .crypto_history import MarketHistory
+from .price_indicators import Indices
+
 
 
 

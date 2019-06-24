@@ -1,61 +1,12 @@
-import requests
 import pandas as pd
 import numpy as np
 import warnings
-from bs4 import BeautifulSoup
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
-from requests.adapters import HTTPAdapter
-from requests.packages.urllib3.util.retry import Retry
+
 warnings.filterwarnings('ignore')
 
-
-class price:
-    __Crypto_Price_Base_URL = 'https://coinmarketcap.com/currencies/'
-
-    def __init__(self, price_url=__Crypto_Price_Base_URL):
-        self.price_url = price_url
-        self.request_timeout = 120
-
-        self.session = requests.Session()
-        retries = Retry(total=5, backoff_factor=0.5, status_forcelist=[502, 503, 504])
-        self.session.mount('http://', HTTPAdapter(max_retries=retries))
-
-    def __request(self, url):
-        try:
-            response = self.session.get(url, timeout = self.request_timeout)
-            response.raise_for_status()
-            soup = BeautifulSoup(response.content, 'html.parser')
-            table = soup.find('table', {'class': 'table'})
-
-            data = [[td.text.strip() for td in tr.findChildren('td')]
-                    for tr in table.findChildren('tr')]
-
-            df = pd.DataFrame(data)
-            df = df.drop(columns=[1, 2, 3, 5, 6])
-            df = df.drop(0, 0).reset_index(drop=True)
-            df.columns = ['date', 'price']
-            df['date'] = pd.to_datetime(df['date'])
-            df['price'] = df['price'].astype(np.float)
-            return df
-        except Exception as e:
-            raise
-
-    def get_price(self, coin_id, start_date, end_date):
-
-        """Get historical price data of cryptocurrency from CoinMarketCap.
-         This will take cryptocurrency name, start date and end date as inputs.
-         All inputs are strings. Date format is 'YYYYMMDD' """
-        url = '{0}{1}/historical-data/?start={2}&end={3}'.format(self.price_url, coin_id, start_date, end_date)
-
-        try:
-            return self.__request(url)
-        except Exception as e:
-            print(e)
-            print('Please, check inputs. Coin id, and dates are strings. Date format is "YYYYMMDD"')
-
-
-class indices:
+class Indices:
 
     def get_bvol_index( price_data):
 
@@ -102,7 +53,7 @@ class indices:
             ax2.tick_params(axis='y', colors='b')
 
             plt.suptitle('Price  and  Volatility Index', color='red', fontsize=24)
-
+            plt.savefig('bvol_index.png')
             return plt.show()
         except Exception as e:
             return  e
@@ -153,8 +104,8 @@ class indices:
             ax2.plot(df['date'], df['RSI_2'], color='b', label='RSI')
             plt.xlabel('Time', color='red', fontsize=20)
             plt.ylabel('Relative Strength Index (RSI)', color='r', fontsize=20)
-            plt.text('2019-03-01', 71.5, '>70 OverBought', fontsize=20, color='green')
-            plt.text('2019-03-01', 23, '<30 OverSold', fontsize=20, color='green')
+            plt.text('2019-06-01', 71.5, '>70 OverBought', fontsize=20, color='green')
+            plt.text('2019-06-01', 23, '<30 OverSold', fontsize=20, color='green')
             plt.legend()
             plt.setp(ax2.xaxis.get_majorticklabels(), rotation=90)
             ax2.xaxis.set_major_locator(ticker.MultipleLocator(30))
@@ -166,14 +117,17 @@ class indices:
             ax2.axhline(y=30, color='r')
 
             plt.suptitle('Price  and  Relative  Strength Index', color='red', fontsize=24)
-
+            plt.save('rsi.png')
             return plot.show()
         except Exception as e:
             return e
 
     def get_bollinger_bands(price_data, days):
 
-        """ Calculate Bollinger Bands """
+        """ Calculate Bollinger Bands
+         Input data should be a price pandas DataFrame and
+         number of days to be used to calculated Simple Moving Average (SMA)
+         """
         try:
             df = price_data
             df['SMA'] = df['price'].rolling(days).mean()
@@ -185,8 +139,15 @@ class indices:
             plt.plot(df['date'], df['pluse'], color='g')
             plt.plot(df['date'], df['minus'], color='g')
             plt.plot(df['date'], df['price'], color='orange')
+            plt.legend()
+            plt.xlabel('Time', color ='b', fontsize =22)
+            plt.ylabel('Price', color ='b', fontsize =22)
+            plt.title('Bollinger Bands', color ='b', fontsize =27)
+            plt.tick_params(labelsize =17)
+            fig.set_facecolor('yellow')
+            plt.grid()
+            plt.savefig('bollinger_bands.png', bbox_inches='tight', facecolor='yellow')
             plt.show()
-
             return df
         except Exception as e:
             return e
