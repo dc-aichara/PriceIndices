@@ -97,7 +97,7 @@ This will also save Bollingers bands plot in your working directory as 'bollinge
 
 ### Disclaimer: 
 ```
-All content provided here, is for your general information only, procured  from third party sources.
+All content provided here, is for educational purpose and your general information only, procured  from third party sources.
 I make no warranties of any kind in relation to this content, including but  not limited to accuracy
 and updatedness. No part of the content that I provide  constitutes  financial  advice, legal advice 
 or any other form of advice meant for your specific reliance for any purpose. Any use or reliance on

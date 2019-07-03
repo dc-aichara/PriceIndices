@@ -6,11 +6,22 @@ import warnings
 warnings.filterwarnings('ignore')
 
 
-class Indices:
+class Indices(object):
 
-    def get_bvol_index( price_data):
+    def __abs__(self):
 
-        """ Calculate Cryptocureency price's 30 days volatile index """
+    def get_bvol_index(self,  price_data):
+
+        """
+         Volatility Index is a measure of market's expectation of volatility over the near term.
+         Volatility is often described as the "rate and magnitude of changes in prices" and in
+          finance often referred to as risk.
+          Reference: www.moneycontrol.com
+
+          Calculate Cryptocureency price's 30 days volatile index
+          :param price_data: pandas DataFrame
+          :return: pandas DataFrame
+          """
         try:
             df = price_data
             df = df.sort_values(by='date').reset_index(drop=True)
@@ -24,7 +35,7 @@ class Indices:
         except Exception as e:
             return e
 
-    def get_bvol_graph( bvol_data):
+    def get_bvol_graph(self, bvol_data):
 
         """Make a line graph of bvol index with respect to time"""
         try:
@@ -58,9 +69,26 @@ class Indices:
         except Exception as e:
             return  e
 
-    def get_rsi(price_data):
+    def get_rsi(self, price_data):
 
-        """calculate Relative Strength Index"""
+        """
+        Type:
+            Momentum indicator
+
+        Computation:
+                    It is based on the average price increase during a period of rising prices and average price fall
+                    during a period of falling stock prices. Relative Strength Index (RSI) is plotted between 0 and 100.
+
+        What it signals
+                        Usually, the market is treated as overbought when RSI goes above 70 (80 for highly volatile
+                         stocks) and oversold when it hits 30—20 for highly volatile stocks.
+
+        Read more at:
+                    https://economictimes.indiatimes.com/
+        :param price_data: pandas DataFrame
+
+        :return: pandas DataFrame
+        """
         try:
             df = price_data
             df['price_change'] = (df['price'] - df['price'].shift(1))
@@ -122,12 +150,27 @@ class Indices:
         except Exception as e:
             return e
 
-    def get_bollinger_bands(price_data, days):
+    def get_bollinger_bands(self, price_data, days=20):
+        """
+        Type:
+            Trend, volatility, momentum indicator
 
-        """ Calculate Bollinger Bands
-         Input data should be a price pandas DataFrame and
-         number of days to be used to calculated Simple Moving Average (SMA)
-         """
+        Computation:
+                    They comprise three lines: A 20-day moving average, an upper band and lower band—the upper and
+                     lower bands are plotted as two standard deviations from the moving average.
+
+        What it signals:
+                        The moving average shows the trend, the gap between upper and lower band
+                        shows volatility in the counter.
+
+        Read more at:
+                    https://economictimes.indiatimes.com/
+                    https://www.bollingerbands.com/bollinger-bands
+        :param days: int
+        :param price_data: pandas DataFrame
+        :return: a pandas DataFrame and save a plot to local project directory as 'bollinger_bands.png'.
+        """
+
         try:
             df = price_data
             df['SMA'] = df['price'].rolling(days).mean()
@@ -151,4 +194,35 @@ class Indices:
             return df
         except Exception as e:
             return e
+
+    def moving_average_convergence_divergence(self, price_data):
+        """
+        Type
+            Trend and momentum indicator
+
+        Computation
+            The difference between 12 and 26-day moving averages.
+
+        What it signals
+            Rising Moving Average Convergence Divergence (MACD) indicates an upward price trend
+             and falling MACD indicates a downward price trend.
+
+        Read more at:
+            https://economictimes.indiatimes.com/
+        :param price_data: pandas DataFrame
+        :return:
+        """
+
+
+
+    def simple_moving_average(self, price_data, days):
+        """
+        Simple moving average of given days
+        :param price_data: pandas DataFrame
+        :param days: int
+        :return:
+        """
+
+
+
 
