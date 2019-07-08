@@ -83,7 +83,7 @@ class Indices(object):
                         Usually, the market is treated as overbought when RSI goes above 70 (80 for highly volatile
                          stocks) and oversold when it hits 30—20 for highly volatile stocks.
 
-        Read more at:
+        Reference:
                     https://economictimes.indiatimes.com/
         :param price_data: pandas DataFrame
 
@@ -163,7 +163,7 @@ class Indices(object):
                         The moving average shows the trend, the gap between upper and lower band
                         shows volatility in the counter.
 
-        Read more at:
+        Reference:
                     https://economictimes.indiatimes.com/
                     https://www.bollingerbands.com/bollinger-bands
         :param days: int
@@ -207,7 +207,7 @@ class Indices(object):
             Rising Moving Average Convergence Divergence (MACD) indicates an upward price trend
              and falling MACD indicates a downward price trend.
 
-        Read more at:
+        Reference:
             https://economictimes.indiatimes.com/
         :param price_data: pandas DataFrame
         :return:
@@ -220,8 +220,14 @@ class Indices(object):
         Simple moving average of given days
         :param price_data: pandas DataFrame
         :param days: int
-        :return:
+        :return: pandas DataFrame
         """
+        try:
+            df = price_data
+            df['SMA'] = df['price'].rolling(days).mean()
+            return df
+        except Exception as e:
+            return print('SMA Error - {}'.format(e))
 
 
 
