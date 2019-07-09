@@ -35,7 +35,7 @@ from PriceIndices import MarketHistory, Indices
 4 2019-06-19   9078.73   9299.62   9070.40   9273.52  15546809946  164780855869
 
 
->>>price_data  =  history.get_price('bitcoin', '20130428', '20190624')  # Get closing price
+>>> price_data  =  history.get_price('bitcoin', '20130428', '20190624')  # Get closing price
 
 >>> price_data .head()
         date     price
@@ -61,7 +61,7 @@ from PriceIndices import MarketHistory, Indices
 This will return a plot of BVOL index against time also save volatility index plot in your working directory as 'bvol_index.png'
 """
 ```
-![](plots/bvol_index.png)
+<img src= 'plots/bvol_index.png' >
 
 ```python
 
@@ -81,7 +81,7 @@ This will return a plot of BVOL index against time also save volatility index pl
 This will return a plot of RSI against time and also save RSI plot in your working directory as 'rsi.png'
 """
 ```
-![](plots/rsi.png)
+< img src = 'plots/rsi.png' >
 ```python
 >>> df_bb = Indices.get_bollinger_bands(price_data , 20) # Get Bollinger Bands and plot
 >>> df_bb.tail()
@@ -97,7 +97,7 @@ This will also save Bollingers bands plot in your working directory as 'bollinge
 """
 
 ```
-![](plots/bollinger_bands.png)
+< img src ='plots/bollinger_bands.png' >
 
 ```python
 

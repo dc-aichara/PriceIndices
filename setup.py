@@ -6,14 +6,14 @@ with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
 setuptools.setup(
   name = 'PriceIndices',
   packages = ['PriceIndices'],
-  version = '0.3',
+  version = '0.4',
   license='MIT',
   description = 'This package can be useful to get historical price data of cryptocurrencies from CoinMarketCap, and calculate & plot different indicators.',
   author = 'Dayal Chand Aichara',
   author_email = 'dc.aichara@gmail.com',
   url = 'https://github.com/dc-aichara/Price-Indices',
-  download_url = 'https://github.com/dc-aichara/PriceIndices/archive/v-0.3.tar.gz',
-  keywords = ['Volatility', 'blockchain', 'cryptocurrency', 'Price', 'trading', 'CoinMarketCap'],
+  download_url = 'https://github.com/dc-aichara/PriceIndices/archive/v-0.4.tar.gz',
+  keywords = ['Volatility', 'blockchain', 'cryptocurrency', 'Price', 'trading', 'CoinMarketCap', 'Indices'],
   install_requires=['requests', 'pandas', 'numpy', 'matplotlib'],
   classifiers=[
     'Development Status :: 4 - Beta',
@@ -21,6 +21,11 @@ setuptools.setup(
     'Topic :: Software Development :: Build Tools',
     'License :: OSI Approved :: MIT License',
     'Programming Language :: Python :: 3',
+    'Programming Language :: Python :: 3.3',
+    'Programming Language :: Python :: 3.5',
+    'Programming Language :: Python :: 3.6',
+    'Programming Language :: Python :: 3.7',
+
     'Operating System :: OS Independent'
   ],
   long_description=long_description,
