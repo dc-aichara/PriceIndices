@@ -1,16 +1,13 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib.ticker as ticker
 import warnings
 warnings.filterwarnings('ignore')
 
 
-class Indices(object):
+class Indices:
 
-    def __abs__(self):
-
-    def get_bvol_index(self,  price_data):
+    def get_bvol_index(price_data):
 
         """
          Volatility Index is a measure of market's expectation of volatility over the near term.
@@ -22,6 +19,7 @@ class Indices(object):
           :param price_data: pandas DataFrame
           :return: pandas DataFrame
           """
+
         try:
             df = price_data
             df = df.sort_values(by='date').reset_index(drop=True)
@@ -35,12 +33,12 @@ class Indices(object):
         except Exception as e:
             return e
 
-    def get_bvol_graph(self, bvol_data):
+    def get_bvol_graph(bvol_data):
 
         """Make a line graph of bvol index with respect to time"""
         try:
             df = bvol_data
-            fig, ax = plt.subplots(figsize=(16, 12))
+            fig, ax = plt.subplots(figsize=(14, 12))
             rect = fig.patch
             rect.set_facecolor('yellow')
             ax1 = plt.subplot(211)
@@ -57,19 +55,18 @@ class Indices(object):
             plt.ylabel('Volatility Index', color='r', fontsize=20)
             plt.legend()
             plt.setp(ax2.xaxis.get_majorticklabels(), rotation=90)
-            ax2.xaxis.set_major_locator(ticker.MultipleLocator(30))
             ax2.grid(color='grey', linestyle='-', linewidth=0.25, alpha=0.5)
 
             ax2.tick_params(axis='x', colors='b')
             ax2.tick_params(axis='y', colors='b')
 
             plt.suptitle('Price  and  Volatility Index', color='red', fontsize=24)
-            plt.savefig('bvol_index.png')
+            plt.savefig('bvol_index.png',bbox_inches='tight', facecolor='orange')
             return plt.show()
         except Exception as e:
             return  e
 
-    def get_rsi(self, price_data):
+    def get_rsi(price_data):
 
         """
         Type:
@@ -91,7 +88,7 @@ class Indices(object):
         """
         try:
             df = price_data
-            df['price_change'] = (df['price'] - df['price'].shift(1))
+            df['price_change'] = df['price'] - df['price'].shift(1)
             df = df.dropna()
             df['gain'] = df['price_change'].apply(lambda x: x if x >= 0 else 0)
 
@@ -118,7 +115,7 @@ class Indices(object):
     def get_rsi_graph(rsi_data):
         try:
             df = rsi_data
-            fig, ax = plt.subplots(figsize=(16, 12))
+            fig, ax = plt.subplots(figsize=(14, 12))
             rect = fig.patch
             rect.set_facecolor('yellow')
             ax1 = plt.subplot(211)
@@ -132,11 +129,10 @@ class Indices(object):
             ax2.plot(df['date'], df['RSI_2'], color='b', label='RSI')
             plt.xlabel('Time', color='red', fontsize=20)
             plt.ylabel('Relative Strength Index (RSI)', color='r', fontsize=20)
-            plt.text('2019-06-01', 71.5, '>70 OverBought', fontsize=20, color='green')
-            plt.text('2019-06-01', 23, '<30 OverSold', fontsize=20, color='green')
+            plt.text(df['date'][int(len(df)/2)], 80, '>70 OverBought', fontsize=20, color='black')
+            plt.text(df['date'][int(len(df)/2)], 15, '<30 OverSold', fontsize=20, color='black')
             plt.legend()
             plt.setp(ax2.xaxis.get_majorticklabels(), rotation=90)
-            ax2.xaxis.set_major_locator(ticker.MultipleLocator(30))
 
             ax2.tick_params(axis='x', colors='b')
             ax2.tick_params(axis='y', colors='b')
@@ -145,12 +141,12 @@ class Indices(object):
             ax2.axhline(y=30, color='r')
 
             plt.suptitle('Price  and  Relative  Strength Index', color='red', fontsize=24)
-            plt.save('rsi.png')
-            return plot.show()
+            plt.savefig('rsi.png', bbox_inches='tight', facecolor='orange')
+            return plt.show()
         except Exception as e:
             return e
 
-    def get_bollinger_bands(self, price_data, days=20):
+    def get_bollinger_bands(price_data, days=20):
         """
         Type:
             Trend, volatility, momentum indicator
@@ -178,7 +174,7 @@ class Indices(object):
             df['pluse'] = df['SMA'] + df['SD']*2
             df['minus'] = df['SMA'] - df['SMA']*2
 
-            fig, ax = plt.subplots(figsize=(20, 16))
+            fig, ax = plt.subplots(figsize=(16, 12))
             plt.plot(df['date'], df['pluse'], color='g')
             plt.plot(df['date'], df['minus'], color='g')
             plt.plot(df['date'], df['price'], color='orange')
@@ -189,13 +185,13 @@ class Indices(object):
             plt.tick_params(labelsize =17)
             fig.set_facecolor('yellow')
             plt.grid()
-            plt.savefig('bollinger_bands.png', bbox_inches='tight', facecolor='yellow')
+            plt.savefig('bollinger_bands.png', bbox_inches='tight', facecolor='orange')
             plt.show()
             return df
         except Exception as e:
             return e
 
-    def moving_average_convergence_divergence(self, price_data):
+    def get_moving_average_convergence_divergence(price_data):
         """
         Type
             Trend and momentum indicator
@@ -212,10 +208,19 @@ class Indices(object):
         :param price_data: pandas DataFrame
         :return:
         """
+        try:
+            df = price_data
+            df['SMA_12'] = df['price'].rolling(12).mean()
+            df['SMA_26'] = df['price'].rolling(26).mean()
+            df['MACD'] = df['SMA_12'] - df['SMA_26']
+            df = df.dropna()
+            return df
+        except Exception as e:
+            return print('MACD Error - {}'.format(e))
 
 
 
-    def simple_moving_average(self, price_data, days):
+    def get_simple_moving_average(price_data, days):
         """
         Simple moving average of given days
         :param price_data: pandas DataFrame
@@ -225,6 +230,7 @@ class Indices(object):
         try:
             df = price_data
             df['SMA'] = df['price'].rolling(days).mean()
+            df = df.dropna()
             return df
         except Exception as e:
             return print('SMA Error - {}'.format(e))

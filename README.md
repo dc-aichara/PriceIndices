@@ -25,8 +25,8 @@ from PriceIndices import MarketHistory, Indices
 ```python
 >>> history = MarketHistory()
 
->>> df = history.get_history('bitcoin', '20130428', '20190624')  # Get Market History
->>> df.head()
+>>> df_history = history.get_history('bitcoin', '20130428', '20190624')  # Get Market History
+>>> df_history.head()
         Date     Open*      High       Low   Close**       Volume    Market Cap
 0 2019-06-23  10696.69  11246.14  10556.10  10855.37  20998326502  192970090355
 1 2019-06-22  10175.92  11157.35  10107.04  10701.69  29995204861  190214124824
@@ -35,9 +35,9 @@ from PriceIndices import MarketHistory, Indices
 4 2019-06-19   9078.73   9299.62   9070.40   9273.52  15546809946  164780855869
 
 
->>> df =  history.get_price('bitcoin', '20130428', '20190624')  # Get closing price
+>>>price_data  =  history.get_price('bitcoin', '20130428', '20190624')  # Get closing price
 
->>> df.head()
+>>> price_data .head()
         date     price
 0 2019-06-23  10855.37
 1 2019-06-22  10701.69
@@ -46,7 +46,7 @@ from PriceIndices import MarketHistory, Indices
 4 2019-06-19   9273.52
 
 
->>> df_bvol = Indices.get_bvol_index(df)  # Calculate Volatility Index
+>>> df_bvol = Indices.get_bvol_index(price_data )  # Calculate Volatility Index
 >>> df_bvol.head()
         date     price  BVOL_Index
 0 2019-06-22  10701.69    0.636482
@@ -60,8 +60,12 @@ from PriceIndices import MarketHistory, Indices
 """
 This will return a plot of BVOL index against time also save volatility index plot in your working directory as 'bvol_index.png'
 """
+```
+![](plots/bvol_index.png)
 
->>> df_rsi = Indices.get_rsi(df)   # Calculate RSI
+```python
+
+>>> df_rsi = Indices.get_rsi(price_data)   # Calculate RSI
 
 >>> print(df_rsi.tail())
            date   price  price_change   gain   loss  gain_average  loss_average        RS      RSI_1  RS_Smooth      RSI_2
@@ -76,7 +80,10 @@ This will return a plot of BVOL index against time also save volatility index pl
 """
 This will return a plot of RSI against time and also save RSI plot in your working directory as 'rsi.png'
 """
->>> df_bb = Indices.get_bollinger_bands(df, 20) # Get Bollinger Bands and plot
+```
+![](plots/rsi.png)
+```python
+>>> df_bb = Indices.get_bollinger_bands(price_data , 20) # Get Bollinger Bands and plot
 >>> df_bb.tail()
            date   price       SMA         SD       pluse     minus
 2243 2013-05-02  105.21  115.2345   6.339257  127.913013 -115.2345
@@ -90,7 +97,33 @@ This will also save Bollingers bands plot in your working directory as 'bollinge
 """
 
 ```
+![](plots/bollinger_bands.png)
 
+```python
+
+>>> df_macd= Indices.get_moving_average_convergence_divergence(price_data ) # Get moving average convergence divergence 
+
+>>> df_macd.tail()
+           date   price      SMA_12      SMA_26      MACD
+2257 2013-05-02  105.21  112.235833  118.603077 -6.367244
+2258 2013-05-01  116.99  112.153333  118.112692 -5.959359
+2259 2013-04-30  139.00  114.153333  118.325000 -4.171667
+2260 2013-04-29  144.54  116.595000  118.808077 -2.213077
+2261 2013-04-28  134.21  118.012500  118.846923 -0.834423
+
+```
+```python
+>>> df_sma = Indices.get_simple_moving_average(price_data,20) # Get simple moving average
+>>> df_sma.tail()
+           date   price       SMA
+2257 2013-05-02  105.21  115.2345
+2258 2013-05-01  116.99  114.9400
+2259 2013-04-30  139.00  115.7900
+2260 2013-04-29  144.54  116.9175
+2261 2013-04-28  134.21  117.4530
+
+
+```
 ### License 
 [MIT](https://choosealicense.com/licenses/mit/) © [Dayal Chand Aichara](https://github.com/dc-aichara)
 
