@@ -16,7 +16,7 @@ class Indices:
           Reference: www.moneycontrol.com
 
           Calculate Cryptocureency price's 30 days volatile index
-          :param price_data: pandas DataFrame
+          :param price_data: Pandas DataFrame with price column
           :return: pandas DataFrame
           """
 
@@ -82,7 +82,7 @@ class Indices:
 
         Reference:
                     https://economictimes.indiatimes.com/
-        :param price_data: pandas DataFrame
+        :param price_data: Pandas DataFrame with price column
 
         :return: pandas DataFrame
         """
@@ -163,7 +163,7 @@ class Indices:
                     https://economictimes.indiatimes.com/
                     https://www.bollingerbands.com/bollinger-bands
         :param days: int
-        :param price_data: pandas DataFrame
+        :param price_data: Pandas DataFrame with price column
         :return: a pandas DataFrame and save a plot to local project directory as 'bollinger_bands.png'.
         """
 
@@ -205,20 +205,30 @@ class Indices:
 
         Reference:
             https://economictimes.indiatimes.com/
-        :param price_data: pandas DataFrame
-        :return:
+        :param price_data: Pandas DataFrame with price column
+        :return: pandas DataFrame
         """
         try:
             df = price_data
-            df['SMA_12'] = df['price'].rolling(12).mean()
-            df['SMA_26'] = df['price'].rolling(26).mean()
-            df['MACD'] = df['SMA_12'] - df['SMA_26']
+            df['EMA_12'] = df['price'].ewm(span=12, adjust=False).mean()
+            df['EMA_26'] = df['price'].ewm(span=26, adjust=False).mean()
+            df['MACD'] = df['EMA_12'] - df['EMA_26']
             df = df.dropna()
+
+            fig, ax = plt.subplots(figsize=(14, 9))
+            plt.plot(df['date'], df['price'], color='r', label='Price')
+            plt.plot(df['date'], df['MACD'], color='b', label='MACD')
+            plt.legend()
+            plt.title('Price and MACD Plot', fontsize=28, color='b')
+            plt.xlabel('Time', color='b', fontsize=19)
+            plt.ylabel('Price', color='b', fontsize=19)
+            plt.savefig('macd.png', bbox_inches='tight', facecolor='orange')
+            fig.set_facecolor('orange')
+            plt.show()
+
             return df
         except Exception as e:
             return print('MACD Error - {}'.format(e))
-
-
 
     def get_simple_moving_average(price_data, days):
         """
@@ -231,9 +241,50 @@ class Indices:
             df = price_data
             df['SMA'] = df['price'].rolling(days).mean()
             df = df.dropna()
+            fig, ax = plt.subplots(figsize=(14, 9))
+            plt.plot(df['date'], df['price'], color='r', label='Price')
+            plt.plot(df['date'], df['SMA'], color='b', label='SMA')
+            plt.legend()
+            plt.title('Price and SMA Plot', fontsize=28, color='b')
+            plt.xlabel('Time', color='b', fontsize=19)
+            plt.ylabel('Price', color='b', fontsize=19)
+            plt.savefig('sma.png', bbox_inches='tight', facecolor='orange')
+            fig.set_facecolor('orange')
+            plt.show()
             return df
         except Exception as e:
             return print('SMA Error - {}'.format(e))
+
+    def get_exponential_moving_average(price_data, periods=[20]):
+        """
+        The EMA is a moving average that places a greater weight and significance on the most recent data points.
+        Like all moving averages, this technical indicator is used to produce buy and sell signals based on crossovers and divergences from the historical average.
+        Traders often use several different EMA days, for instance, 20-day, 30-day, 90-day, and 200-day moving averages.
+        Reference: https://www.investopedia.com/
+        :param price_data: Pandas DataFrame with price column
+        :param period: a list of periods (int)
+        :return:
+        """
+        try:
+            df = price_data
+            for period in periods:
+                df['EMA_{}'.format(period)] = df['price'].ewm(span=period, adjust=False).mean()
+                df = df.dropna()
+            fig, ax = plt.subplots(figsize=(14, 9))
+            plt.plot(df['date'], df['price'], color='r', label='Price')
+            for period in periods:
+                plt.plot(df['date'], df['EMA_{}'.format(period)], label='EMA_{}'.format(period))
+            plt.legend()
+            plt.title('Price and EMA Plot', fontsize=28, color='b')
+            plt.xlabel('Time', color='b', fontsize=19)
+            plt.ylabel('Price/EMA', color='b', fontsize=19)
+            plt.savefig('ema.png', bbox_inches='tight', facecolor='orange')
+            fig.set_facecolor('orange')
+            plt.show()
+            return df
+        except Exception as e:
+            return print('EMA Error - {}'.format(e))
+
 
 
 
