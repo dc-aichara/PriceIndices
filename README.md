@@ -100,7 +100,7 @@ This will return a plot of RSI against time and also save RSI plot in your worki
 """
 ```
 
-< img src='plots/rsi.png' >
+<img src='plots/rsi.png' >
 
 
 - #### Get Bollinger Bands and its plot
@@ -121,7 +121,7 @@ This will also save Bollingers bands plot in your working directory as 'bollinge
 ```
 
 
-< img src ='plots/bollinger_bands.png' >
+<img src='plots/bollinger_bands.png'>
 
 
 - #### Get Moving Average Convergence Divergence (MACD) and its plot
