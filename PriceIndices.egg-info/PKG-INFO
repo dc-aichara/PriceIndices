@@ -1,12 +1,12 @@
 Metadata-Version: 2.1
 Name: PriceIndices
-Version: 0.4
+Version: 0.5.1
 Summary: This package can be useful to get historical price data of cryptocurrencies from CoinMarketCap, and calculate & plot different indicators.
 Home-page: https://github.com/dc-aichara/Price-Indices
 Author: Dayal Chand Aichara
 Author-email: dc.aichara@gmail.com
 License: MIT
-Download-URL: https://github.com/dc-aichara/PriceIndices/archive/v-0.4.tar.gz
+Download-URL: https://github.com/dc-aichara/PriceIndices/archive/v-0.5.1.tar.gz
 Description: 
         ## Installation 
         
@@ -31,10 +31,13 @@ Description:
         ```
         ## Examples 
         
+        - #### Get market history and closing price
         ```python
         >>> history = MarketHistory()
         
-        >>> df_history = history.get_history('bitcoin', '20130428', '20190624')  # Get Market History
+        # Get Market History 
+        
+        >>> df_history = history.get_history('bitcoin', '20130428', '20190624')  
         >>> df_history.head()
                 Date     Open*      High       Low   Close**       Volume    Market Cap
         0 2019-06-23  10696.69  11246.14  10556.10  10855.37  20998326502  192970090355
@@ -43,8 +46,9 @@ Description:
         3 2019-06-20   9273.06   9594.42   9232.48   9527.16  17846823784  169304784791
         4 2019-06-19   9078.73   9299.62   9070.40   9273.52  15546809946  164780855869
         
+        # Get closing price
         
-        >>>price_data  =  history.get_price('bitcoin', '20130428', '20190624')  # Get closing price
+        >>> price_data  =  history.get_price('bitcoin', '20130428', '20190624')  
         
         >>> price_data .head()
                 date     price
@@ -54,8 +58,12 @@ Description:
         3 2019-06-20   9527.16
         4 2019-06-19   9273.52
         
+        ```
+        - #### Calculate Volatility Index
+        ```python
         
-        >>> df_bvol = Indices.get_bvol_index(price_data )  # Calculate Volatility Index
+        
+        >>> df_bvol = Indices.get_bvol_index(price_data )  
         >>> df_bvol.head()
                 date     price  BVOL_Index
         0 2019-06-22  10701.69    0.636482
@@ -64,17 +72,22 @@ Description:
         3 2019-06-19   9273.52    0.608403
         4 2019-06-18   9081.76    0.604174
         
-        >>> Indices.get_bvol_graph(df_bvol)  # Plot Volatility Index 
+        
+        ```
+        - #### Plot Volatility Index
+        ```python
+        >>> Indices.get_bvol_graph(df_bvol)   
         
         """
         This will return a plot of BVOL index against time also save volatility index plot in your working directory as 'bvol_index.png'
         """
         ```
-        ![](plots/bvol_index.png)
+        <img src= 'plots/bvol_index.png' >
         
+        - #### Calculate Relative Strength Index (RSI)
         ```python
         
-        >>> df_rsi = Indices.get_rsi(price_data)   # Calculate RSI
+        >>> df_rsi = Indices.get_rsi(price_data)   
         
         >>> print(df_rsi.tail())
                    date   price  price_change   gain   loss  gain_average  loss_average        RS      RSI_1  RS_Smooth      RSI_2
@@ -84,15 +97,24 @@ Description:
         2220 2013-04-29  144.54          5.54   5.54   0.00      3.878571      1.981429  1.957462  66.187226   2.206422  68.812592
         2221 2013-04-28  134.21        -10.33   0.00  10.33      3.878571      2.506429  1.547449  60.745050   1.397158  58.283931
         
-        >>> Indices.get_rsi_graph(df_rsi)  # Plot RSI
+        ```
+        - #### Plot RSI
+        ```python
+        
+        
+        >>> Indices.get_rsi_graph(df_rsi)  
         
         """
         This will return a plot of RSI against time and also save RSI plot in your working directory as 'rsi.png'
         """
         ```
-        ![](plots/rsi.png)
+        
+        <img src='plots/rsi.png' >
+        
+        
+        - #### Get Bollinger Bands and its plot
         ```python
-        >>> df_bb = Indices.get_bollinger_bands(price_data , 20) # Get Bollinger Bands and plot
+        >>> df_bb = Indices.get_bollinger_bands(price_data , 20) 
         >>> df_bb.tail()
                    date   price       SMA         SD       pluse     minus
         2243 2013-05-02  105.21  115.2345   6.339257  127.913013 -115.2345
@@ -106,33 +128,64 @@ Description:
         """
         
         ```
-        ![](plots/bollinger_bands.png)
         
+        
+        <img src='plots/bollinger_bands.png'>
+        
+        
+        - #### Get Moving Average Convergence Divergence (MACD) and its plot
         ```python
         
-        >>> df_macd= Indices.get_moving_average_convergence_divergence(price_data ) # Get moving average convergence divergence 
-        
-        >>> df_macd.tail()
-                   date   price      SMA_12      SMA_26      MACD
-        2257 2013-05-02  105.21  112.235833  118.603077 -6.367244
-        2258 2013-05-01  116.99  112.153333  118.112692 -5.959359
-        2259 2013-04-30  139.00  114.153333  118.325000 -4.171667
-        2260 2013-04-29  144.54  116.595000  118.808077 -2.213077
-        2261 2013-04-28  134.21  118.012500  118.846923 -0.834423
-        
-        ```
-        ```python
-        >>> df_sma = Indices.get_simple_moving_average(price_data,20) # Get simple moving average
-        >>> df_sma.tail()
-                   date   price       SMA
-        2257 2013-05-02  105.21  115.2345
-        2258 2013-05-01  116.99  114.9400
-        2259 2013-04-30  139.00  115.7900
-        2260 2013-04-29  144.54  116.9175
-        2261 2013-04-28  134.21  117.4530
+        >>> df_macd = Indices.get_moving_average_convergence_divergence(price_data)
+        """This will return a pandas DataFrame and save EMA plot as 'macd.png' in working directory. 
+        """"
+        >>> df_macd.head()
+                 date    price      EMA_12        EMA_26        MACD
+        19 2019-06-18  9081.76    10415.979340  10886.327599 -470.348259
+        20 2019-06-17  9320.35    10247.420980  10770.329259 -522.908279
+        21 2019-06-16  8994.49    10054.662368  10638.785610 -584.123242
+        22 2019-06-15  8838.38    9867.542004   10505.422231 -637.880228
+        23 2019-06-14  8693.83    9686.970926   10371.230214 -684.259288
         
         
         ```
+        <img src='plots/macd.png'>
+        
+        - #### Get Simple Moving Average (SMA) and its plot
+        ```python
+        >>> df_sma = Indices.get_simple_moving_average(price_data, 20) 
+        """This will return a pandas DataFrame and save EMA plot as 'sma.png' in working directory. 
+        """"
+        >>> df_sma.head()
+                 date    price         SMA
+        19 2019-06-18  9081.76  10998.4180
+        20 2019-06-17  9320.35  10891.8930
+        21 2019-06-16  8994.49  10781.1900
+        22 2019-06-15  8838.38  10674.1860
+        23 2019-06-14  8693.83  10548.1055
+        
+        ```
+        <img src='plots/sma.png'>
+        
+        
+        - ### Get Exponential Moving Average (EMA) and its plot
+        ```python
+        >>> df_ema = Indices.get_exponential_moving_average(price_data, [20,70])
+        """This will return a pandas DataFrame and save EMA plot as 'ema.png' in working directory. 
+        """"
+        
+        >>> df_ema.head()
+                date     price        EMA_20        EMA_70
+        0 2019-07-07  11450.85  11450.850000  11450.850000
+        1 2019-07-06  11208.55  11427.773810  11444.024648
+        2 2019-07-05  10978.46  11384.982018  11430.910151
+        3 2019-07-04  11215.44  11368.835159  11424.840569
+        4 2019-07-03  11961.27  11425.257525  11439.951257
+        
+        ```
+        <img src='plots/ema.png' >
+        
+        
         ### License 
         [MIT](https://choosealicense.com/licenses/mit/) © [Dayal Chand Aichara](https://github.com/dc-aichara)
         
@@ -149,7 +202,7 @@ Description:
         No content on this Site is meant to be a solicitation or offer.
         ```
         
-Keywords: Volatility,blockchain,cryptocurrency,Price,trading,CoinMarketCap,Indices
+Keywords: Volatility,blockchain,cryptocurrency,Price,trading,CoinMarketCap,Indices,Indicators
 Platform: UNKNOWN
 Classifier: Development Status :: 4 - Beta
 Classifier: Intended Audience :: Education
