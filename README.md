@@ -99,7 +99,9 @@ This will return a plot of BVOL index against time also save volatility index pl
 This will return a plot of RSI against time and also save RSI plot in your working directory as 'rsi.png'
 """
 ```
-< img src = 'plots/rsi.png' >
+
+< img src='plots/rsi.png' >
+
 
 - #### Get Bollinger Bands and its plot
 ```python
@@ -117,6 +119,8 @@ This will also save Bollingers bands plot in your working directory as 'bollinge
 """
 
 ```
+
+
 < img src ='plots/bollinger_bands.png' >
 
 
