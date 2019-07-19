@@ -1,4 +1,6 @@
 
+
+
 ## Installation 
 
 ### pip 
@@ -6,7 +8,8 @@
 ```
 pip install PriceIndics
 ```
- ### From Source (Github)
+
+### From Source (Github)
  
  git clone https://github.com/dc-aichara/Price-Indices.git
  
@@ -14,15 +17,16 @@ pip install PriceIndics
  
  python3 setup.py install
  
- ## Usages 
+## Usages 
  
- ```python
+```python
 from PriceIndices import MarketHistory, Indices
 
 ```
 ## Examples 
 
 - #### Get market history and closing price
+
 ```python
 >>> history = MarketHistory()
 
@@ -50,7 +54,9 @@ from PriceIndices import MarketHistory, Indices
 4 2019-06-19   9273.52
 
 ```
+
 - #### Calculate Volatility Index
+
 ```python
 
 
@@ -63,9 +69,10 @@ from PriceIndices import MarketHistory, Indices
 3 2019-06-19   9273.52    0.608403
 4 2019-06-18   9081.76    0.604174
 
-
 ```
+
 - #### Plot Volatility Index
+
 ```python
 >>> Indices.get_bvol_graph(df_bvol)   
 
@@ -73,9 +80,11 @@ from PriceIndices import MarketHistory, Indices
 This will return a plot of BVOL index against time also save volatility index plot in your working directory as 'bvol_index.png'
 """
 ```
+
 <img src= 'plots/bvol_index.png' >
 
 - #### Calculate Relative Strength Index (RSI)
+
 ```python
 
 >>> df_rsi = Indices.get_rsi(price_data)   
@@ -89,10 +98,10 @@ This will return a plot of BVOL index against time also save volatility index pl
 2221 2013-04-28  134.21        -10.33   0.00  10.33      3.878571      2.506429  1.547449  60.745050   1.397158  58.283931
 
 ```
+
 - #### Plot RSI
+
 ```python
-
-
 >>> Indices.get_rsi_graph(df_rsi)  
 
 """
@@ -102,8 +111,8 @@ This will return a plot of RSI against time and also save RSI plot in your worki
 
 <img src='plots/rsi.png' >
 
-
 - #### Get Bollinger Bands and its plot
+
 ```python
 >>> df_bb = Indices.get_bollinger_bands(price_data , 20) 
 >>> df_bb.tail()
@@ -125,6 +134,7 @@ This will also save Bollingers bands plot in your working directory as 'bollinge
 
 
 - #### Get Moving Average Convergence Divergence (MACD) and its plot
+
 ```python
 
 >>> df_macd = Indices.get_moving_average_convergence_divergence(price_data)
@@ -138,11 +148,12 @@ This will also save Bollingers bands plot in your working directory as 'bollinge
 22 2019-06-15  8838.38    9867.542004   10505.422231 -637.880228
 23 2019-06-14  8693.83    9686.970926   10371.230214 -684.259288
 
-
 ```
+
 <img src='plots/macd.png'>
 
 - #### Get Simple Moving Average (SMA) and its plot
+
 ```python
 >>> df_sma = Indices.get_simple_moving_average(price_data, 20) 
 """This will return a pandas DataFrame and save EMA plot as 'sma.png' in working directory. 
@@ -156,10 +167,11 @@ This will also save Bollingers bands plot in your working directory as 'bollinge
 23 2019-06-14  8693.83  10548.1055
 
 ```
+
 <img src='plots/sma.png'>
 
-
 - ### Get Exponential Moving Average (EMA) and its plot
+
 ```python
 >>> df_ema = Indices.get_exponential_moving_average(price_data, [20,70])
 """This will return a pandas DataFrame and save EMA plot as 'ema.png' in working directory. 
@@ -174,14 +186,16 @@ This will also save Bollingers bands plot in your working directory as 'bollinge
 4 2019-07-03  11961.27  11425.257525  11439.951257
 
 ```
+
 <img src='plots/ema.png' >
 
-
-### License 
+### License
+ 
 [MIT](https://choosealicense.com/licenses/mit/) © [Dayal Chand Aichara](https://github.com/dc-aichara)
 
 
 ### Disclaimer: 
+
 ```
 All content provided here, is for educational purpose and your general information only, procured  from third party sources.
 I make no warranties of any kind in relation to this content, including but  not limited to accuracy
