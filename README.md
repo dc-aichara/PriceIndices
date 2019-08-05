@@ -13,7 +13,7 @@ pip install PriceIndics
  
  git clone https://github.com/dc-aichara/Price-Indices.git
  
- cd PriceIndices 
+ cd Price-Indices 
  
  python3 setup.py install
  
