@@ -29,10 +29,14 @@ class MarketHistory:
             raise
 
     def get_history(self, coin_id, start_date, end_date):
+        """
+        Get historical market data of a cryptocurrency from CoinMarketCap.
 
-        """Get historical market data of a cryptocurrency from CoinMarketCap.
-         This will take cryptocurrency name, start date and end date as inputs.
-         All inputs are strings. Date format is 'YYYYMMDD' """
+        :param coin_id: coin name [str]
+        :param start_date:  date in 'YYYYMMDD' format [str]
+        :param end_date: date in 'YYYYMMDD' format [str]
+        :return: Pandas DataFrame
+        """
         url = '{0}{1}/historical-data/?start={2}&end={3}'.format(self.price_url, coin_id, start_date, end_date)
 
         try:
@@ -42,10 +46,13 @@ class MarketHistory:
             print('Please, check inputs. Coin id, and dates are strings. Date format is "YYYYMMDD"')
 
     def get_price(self, coin_id, start_date, end_date):
-
-        """Get historical price data of a cryptocurrency from CoinMarketCap.
-         This will take cryptocurrency name, start date and end date as inputs.
-         All inputs are strings. Date format is 'YYYYMMDD' """
+        """
+          Get historical market price data (closing price) of a cryptocurrency from CoinMarketCap.
+          :param coin_id: coin name [str]
+          :param start_date:  date in 'YYYYMMDD' format [str]
+          :param end_date: date in 'YYYYMMDD' format [str]
+          :return: Pandas DataFrame
+          """
         url = '{0}{1}/historical-data/?start={2}&end={3}'.format(self.price_url, coin_id, start_date, end_date)
 
         try:

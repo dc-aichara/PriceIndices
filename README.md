@@ -194,6 +194,8 @@ This will also save Bollingers bands plot in your working directory as 'bollinge
 [MIT](https://choosealicense.com/licenses/mit/) © [Dayal Chand Aichara](https://github.com/dc-aichara)
 
 
+### Check out [webpage](https://github.com/dc-aichara/PriceIndices) of this PriceIndices package. 
+
 ### Disclaimer: 
 
 ```
