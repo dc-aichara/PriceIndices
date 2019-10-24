@@ -193,7 +193,7 @@ class Indices:
         except Exception as e:
             return e
 
-    def get_moving_average_convergence_divergence(slef, price_data):
+    def get_moving_average_convergence_divergence(self, price_data):
         """
         Type
             Trend and momentum indicator
@@ -268,14 +268,14 @@ class Indices:
         :return:
         """
         try:
-            df = price_data
+            data = price_data
             for period in periods:
-                df['EMA_{}'.format(period)] = df['price'].ewm(span=period, adjust=False).mean()
-                df = df.dropna()
+                data['EMA_{}'.format(period)] = data['price'].ewm(span=period, adjust=False).mean()
+                data = data.dropna()
             fig, ax = plt.subplots(figsize=(14, 9))
-            plt.plot(df['date'], df['price'], color='r', label='Price')
+            plt.plot(data['date'], data['price'], color='r', label='Price')
             for period in periods:
-                plt.plot(df['date'], df['EMA_{}'.format(period)], label='EMA_{}'.format(period))
+                plt.plot(data['date'], data['EMA_{}'.format(period)], label='EMA_{}'.format(period))
             plt.legend()
             plt.title('Price and EMA Plot', fontsize=28, color='b')
             plt.xlabel('Time', color='b', fontsize=19)
@@ -283,7 +283,7 @@ class Indices:
             plt.savefig('ema.png', bbox_inches='tight', facecolor='orange')
             fig.set_facecolor('orange')
             plt.show()
-            return df
+            return data
         except Exception as e:
             return print('EMA Error - {}'.format(e))
 
