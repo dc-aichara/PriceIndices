@@ -6,8 +6,10 @@ warnings.filterwarnings('ignore')
 
 
 class Indices:
+    def __init__(self):
+        pass
 
-    def get_bvol_index(price_data):
+    def get_bvol_index(self, data):
 
         """
          Volatility Index is a measure of market's expectation of volatility over the near term.
@@ -16,33 +18,33 @@ class Indices:
           Reference: www.moneycontrol.com
 
           Calculate Cryptocureency price's 30 days volatile index
-          :param price_data: Pandas DataFrame with price column
+          :param data: Pandas DataFrame with price column
           :return: pandas DataFrame
           """
 
         try:
-            df = price_data
-            df = df.sort_values(by='date').reset_index(drop=True)
-            ln_ratio_btc = pd.DataFrame(list(np.diff(np.log(df['price']))))
+            data.columns = ['date', 'price']
+            data = data.sort_values(by='date').reset_index(drop=True)
+            ln_ratio_btc = pd.DataFrame(list(np.diff(np.log(data['price']))))
             bvol_btc = pd.DataFrame(ln_ratio_btc.rolling(30).std() * np.sqrt(365))
             bvol_btc.columns = ['BVOL_Index']
-            df = pd.concat([df,bvol_btc], join='inner', axis=1)
-            df = df.dropna()
-            df = df.sort_values(by='date', ascending=False).reset_index(drop=True)
-            return df
+            data1 = pd.concat([data, bvol_btc], join='inner', axis=1)
+            data1 = data1.dropna()
+            data1 = data1.sort_values(by='date', ascending=False).reset_index(drop=True)
+            return data1
         except Exception as e:
             return e
 
-    def get_bvol_graph(bvol_data):
+    def get_bvol_graph(self, bvol_data):
 
         """Make a line graph of bvol index with respect to time"""
         try:
-            df = bvol_data
+            data = bvol_data
             fig, ax = plt.subplots(figsize=(14, 12))
             rect = fig.patch
             rect.set_facecolor('yellow')
             ax1 = plt.subplot(211)
-            ax1.plot(df['date'], df['price'], color='blue', label='Price')
+            ax1.plot(data['date'], data['price'], color='blue', label='Price')
             plt.ylabel('Price', color='red', fontsize=20)
             ax1.axes.get_xaxis().set_ticks([])
             plt.legend()
@@ -50,7 +52,7 @@ class Indices:
             ax1.grid(color='grey', linestyle='-', linewidth=0.25, alpha=0.5)
 
             ax2 = plt.subplot(212)
-            ax2.plot(df['date'], df['BVOL_Index'], color='b', label='BVOL Index')
+            ax2.plot(data['date'], data['BVOL_Index'], color='b', label='BVOL Index')
             plt.xlabel('Time', color='red', fontsize=20)
             plt.ylabel('Volatility Index', color='r', fontsize=20)
             plt.legend()
@@ -66,7 +68,7 @@ class Indices:
         except Exception as e:
             return  e
 
-    def get_rsi(price_data):
+    def get_rsi(self, price_data):
 
         """
         Type:
@@ -112,7 +114,7 @@ class Indices:
         except Exception as e:
             return e
 
-    def get_rsi_graph(rsi_data):
+    def get_rsi_graph(self, rsi_data):
         try:
             df = rsi_data
             fig, ax = plt.subplots(figsize=(14, 12))
@@ -146,7 +148,7 @@ class Indices:
         except Exception as e:
             return e
 
-    def get_bollinger_bands(price_data, days=20):
+    def get_bollinger_bands(slelf, price_data, days=20):
         """
         Type:
             Trend, volatility, momentum indicator
@@ -191,7 +193,7 @@ class Indices:
         except Exception as e:
             return e
 
-    def get_moving_average_convergence_divergence(price_data):
+    def get_moving_average_convergence_divergence(slef, price_data):
         """
         Type
             Trend and momentum indicator
@@ -230,7 +232,7 @@ class Indices:
         except Exception as e:
             return print('MACD Error - {}'.format(e))
 
-    def get_simple_moving_average(price_data, days):
+    def get_simple_moving_average(self, price_data, days):
         """
         Simple moving average of given days
         :param price_data: pandas DataFrame
@@ -255,7 +257,7 @@ class Indices:
         except Exception as e:
             return print('SMA Error - {}'.format(e))
 
-    def get_exponential_moving_average(price_data, periods=[20]):
+    def get_exponential_moving_average(self, price_data, periods=[20]):
         """
         The EMA is a moving average that places a greater weight and significance on the most recent data points.
         Like all moving averages, this technical indicator is used to produce buy and sell signals based on crossovers and divergences from the historical average.

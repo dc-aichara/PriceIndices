@@ -59,6 +59,7 @@ from PriceIndices import MarketHistory, Indices
 
 ```python
 
+Indices = Indices()
 
 >>> df_bvol = Indices.get_bvol_index(price_data )  
 >>> df_bvol.head()
