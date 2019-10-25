@@ -6,10 +6,7 @@ warnings.filterwarnings('ignore')
 
 
 class Indices:
-    def __init__(self):
-        pass
-
-    def get_bvol_index(self, data):
+    def get_bvol_index(df):
 
         """
          Volatility Index is a measure of market's expectation of volatility over the near term.
@@ -23,6 +20,7 @@ class Indices:
           """
 
         try:
+            data = df
             data.columns = ['date', 'price']
             data = data.sort_values(by='date').reset_index(drop=True)
             ln_ratio_btc = pd.DataFrame(list(np.diff(np.log(data['price']))))
@@ -35,11 +33,11 @@ class Indices:
         except Exception as e:
             return e
 
-    def get_bvol_graph(self, bvol_data):
+    def get_bvol_graph(df):
 
         """Make a line graph of bvol index with respect to time"""
         try:
-            data = bvol_data
+            data = df
             fig, ax = plt.subplots(figsize=(14, 12))
             rect = fig.patch
             rect.set_facecolor('yellow')
@@ -66,9 +64,9 @@ class Indices:
             plt.savefig('bvol_index.png',bbox_inches='tight', facecolor='orange')
             return plt.show()
         except Exception as e:
-            return  e
+            return e
 
-    def get_rsi(self, price_data):
+    def get_rsi(df):
 
         """
         Type:
@@ -89,28 +87,28 @@ class Indices:
         :return: pandas DataFrame
         """
         try:
-            df = price_data
-            df['price_change'] = df['price'] - df['price'].shift(1)
-            df = df.dropna()
-            df['gain'] = df['price_change'].apply(lambda x: x if x >= 0 else 0)
+            data = df
+            data['price_change'] = data['price'] - df['price'].shift(1)
+            data.dropna(inplace=True)
+            data['gain'] = data['price_change'].apply(lambda x: x if x >= 0 else 0)
 
-            df['loss'] = df['price_change'].apply(lambda x: abs(x) if x <= 0 else 0)
+            data['loss'] = data['price_change'].apply(lambda x: abs(x) if x <= 0 else 0)
 
-            df['gain_average'] = df['gain'].rolling(14).mean()
+            data['gain_average'] = data['gain'].rolling(14).mean()
 
-            df['loss_average'] = df['loss'].rolling(14).mean()
+            data['loss_average'] = data['loss'].rolling(14).mean()
 
-            df['RS'] = df['gain_average'] / df['loss_average']
+            data['RS'] = data['gain_average'] / df['loss_average']
 
-            df['RSI_1'] = 100 * (1 - (1 / (1 + df['RS'])))
+            data['RSI_1'] = 100 * (1 - (1 / (1 + df['RS'])))
 
-            df['RS_Smooth'] = (df['gain_average'].shift(1) * 13 + df['gain']) / (
-                        df['loss_average'].shift(1) * 13 + df['loss'])
+            data['RS_Smooth'] = (data['gain_average'].shift(1) * 13 + df['gain']) / (
+                        data['loss_average'].shift(1) * 13 + data['loss'])
 
-            df['RSI_2'] = 100 * (1 - (1 / (1 + df['RS_Smooth'])))
-            df = df.fillna(0).reset_index(drop=True)
+            data['RSI_2'] = 100 * (1 - (1 / (1 + data['RS_Smooth'])))
+            data = data.fillna(0).reset_index(drop=True)
 
-            return df
+            return data
         except Exception as e:
             return e
 
@@ -148,7 +146,7 @@ class Indices:
         except Exception as e:
             return e
 
-    def get_bollinger_bands(slelf, price_data, days=20):
+    def get_bollinger_bands(df, days=20):
         """
         Type:
             Trend, volatility, momentum indicator
@@ -170,30 +168,30 @@ class Indices:
         """
 
         try:
-            df = price_data
-            df['SMA'] = df['price'].rolling(days).mean()
-            df['SD'] = df['price'].rolling(days).std()
-            df['pluse'] = df['SMA'] + df['SD']*2
-            df['minus'] = df['SMA'] - df['SMA']*2
+            data = df
+            data['SMA'] = data['price'].rolling(days).mean()
+            data['SD'] = data['price'].rolling(days).std()
+            data['pluse'] = data['SMA'] + data['SD']*2
+            data['minus'] = data['SMA'] - data['SMA']*2
 
             fig, ax = plt.subplots(figsize=(16, 12))
-            plt.plot(df['date'], df['pluse'], color='g')
-            plt.plot(df['date'], df['minus'], color='g')
-            plt.plot(df['date'], df['price'], color='orange')
+            plt.plot(data['date'], data['pluse'], color='g')
+            plt.plot(data['date'], data['minus'], color='g')
+            plt.plot(data['date'], data['price'], color='orange')
             plt.legend()
-            plt.xlabel('Time', color ='b', fontsize =22)
-            plt.ylabel('Price', color ='b', fontsize =22)
-            plt.title('Bollinger Bands', color ='b', fontsize =27)
-            plt.tick_params(labelsize =17)
+            plt.xlabel('Time', color='b', fontsize=22)
+            plt.ylabel('Price', color='b', fontsize=22)
+            plt.title('Bollinger Bands', color='b', fontsize=27)
+            plt.tick_params(labelsize=17)
             fig.set_facecolor('yellow')
             plt.grid()
             plt.savefig('bollinger_bands.png', bbox_inches='tight', facecolor='orange')
             plt.show()
-            return df
+            return data
         except Exception as e:
             return e
 
-    def get_moving_average_convergence_divergence(self, price_data):
+    def get_moving_average_convergence_divergence(df):
         """
         Type
             Trend and momentum indicator
@@ -211,15 +209,15 @@ class Indices:
         :return: pandas DataFrame
         """
         try:
-            df = price_data
-            df['EMA_12'] = df['price'].ewm(span=12, adjust=False).mean()
-            df['EMA_26'] = df['price'].ewm(span=26, adjust=False).mean()
-            df['MACD'] = df['EMA_12'] - df['EMA_26']
-            df = df.dropna()
+            data = df
+            data['EMA_12'] = data['price'].ewm(span=12, adjust=False).mean()
+            data['EMA_26'] = data['price'].ewm(span=26, adjust=False).mean()
+            data['MACD'] = data['EMA_12'] - data['EMA_26']
+            data.dropna(inplace=True)
 
             fig, ax = plt.subplots(figsize=(14, 9))
-            plt.plot(df['date'], df['price'], color='r', label='Price')
-            plt.plot(df['date'], df['MACD'], color='b', label='MACD')
+            plt.plot(data['date'], data['price'], color='r', label='Price')
+            plt.plot(data['date'], data['MACD'], color='b', label='MACD')
             plt.legend()
             plt.title('Price and MACD Plot', fontsize=28, color='b')
             plt.xlabel('Time', color='b', fontsize=19)
@@ -228,11 +226,11 @@ class Indices:
             fig.set_facecolor('orange')
             plt.show()
 
-            return df
+            return data
         except Exception as e:
             return print('MACD Error - {}'.format(e))
 
-    def get_simple_moving_average(self, price_data, days):
+    def get_simple_moving_average(df, days=15):
         """
         Simple moving average of given days
         :param price_data: pandas DataFrame
@@ -240,12 +238,12 @@ class Indices:
         :return: pandas DataFrame
         """
         try:
-            df = price_data
-            df['SMA'] = df['price'].rolling(days).mean()
-            df = df.dropna()
+            data = df
+            data['SMA'] = data['price'].rolling(days).mean()
+            data.dropna(inplace=True)
             fig, ax = plt.subplots(figsize=(14, 9))
-            plt.plot(df['date'], df['price'], color='r', label='Price')
-            plt.plot(df['date'], df['SMA'], color='b', label='SMA')
+            plt.plot(data['date'], data['price'], color='r', label='Price')
+            plt.plot(data['date'], data['SMA'], color='b', label='SMA')
             plt.legend()
             plt.title('Price and SMA Plot', fontsize=28, color='b')
             plt.xlabel('Time', color='b', fontsize=19)
@@ -253,11 +251,11 @@ class Indices:
             plt.savefig('sma.png', bbox_inches='tight', facecolor='orange')
             fig.set_facecolor('orange')
             plt.show()
-            return df
+            return data
         except Exception as e:
             return print('SMA Error - {}'.format(e))
 
-    def get_exponential_moving_average(self, price_data, periods=[20]):
+    def get_exponential_moving_average(df, periods=[20]):
         """
         The EMA is a moving average that places a greater weight and significance on the most recent data points.
         Like all moving averages, this technical indicator is used to produce buy and sell signals based on crossovers and divergences from the historical average.
@@ -268,7 +266,7 @@ class Indices:
         :return:
         """
         try:
-            data = price_data
+            data = df
             for period in periods:
                 data['EMA_{}'.format(period)] = data['price'].ewm(span=period, adjust=False).mean()
                 data = data.dropna()
@@ -286,8 +284,4 @@ class Indices:
             return data
         except Exception as e:
             return print('EMA Error - {}'.format(e))
-
-
-
-
 
