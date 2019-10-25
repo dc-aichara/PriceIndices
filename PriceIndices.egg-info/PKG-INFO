@@ -1,12 +1,12 @@
 Metadata-Version: 2.1
 Name: PriceIndices
-Version: 0.5.4
+Version: 0.5.5
 Summary: A python package to get historical market data of cryptocurrencies from CoinMarketCap, and calculate & plot different indicators.
 Home-page: https://github.com/dc-aichara/Price-Indices
 Author: Dayal Chand Aichara
 Author-email: dc.aichara@gmail.com
 License: MIT
-Download-URL: https://github.com/dc-aichara/PriceIndices/archive/V-0.5.4.tar.gz
+Download-URL: https://github.com/dc-aichara/PriceIndices/archive/v-0.5.5.tar.gz
 Description: 
         
         
@@ -67,8 +67,6 @@ Description:
         - #### Calculate Volatility Index
         
         ```python
-        
-        >>> Indices = Indices()
         
         >>> df_bvol = Indices.get_bvol_index(price_data )  
         >>> df_bvol.head()
