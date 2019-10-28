@@ -61,7 +61,7 @@ class Indices:
             ax2.tick_params(axis='y', colors='b')
 
             plt.suptitle('Price  and  Volatility Index', color='red', fontsize=24)
-            plt.savefig('bvol_index.png',bbox_inches='tight', facecolor='orange')
+            plt.savefig('bvol_index.png', bbox_inches='tight', facecolor='orange')
             return plt.show()
         except Exception as e:
             return e
@@ -107,8 +107,8 @@ class Indices:
 
             data['RSI_2'] = 100 * (1 - (1 / (1 + data['RS_Smooth'])))
             data = data.fillna(0).reset_index(drop=True)
-
-            return data
+            data1 = data
+            return data1
         except Exception as e:
             return e
 
@@ -173,11 +173,11 @@ class Indices:
             data['SD'] = data['price'].rolling(days).std()
             data['pluse'] = data['SMA'] + data['SD']*2
             data['minus'] = data['SMA'] - data['SMA']*2
-
+            data1 = data
             fig, ax = plt.subplots(figsize=(16, 12))
-            plt.plot(data['date'], data['pluse'], color='g')
-            plt.plot(data['date'], data['minus'], color='g')
-            plt.plot(data['date'], data['price'], color='orange')
+            plt.plot(data1['date'], data1['pluse'], color='g')
+            plt.plot(data1['date'], data1['minus'], color='g')
+            plt.plot(data1['date'], data1['price'], color='orange')
             plt.legend()
             plt.xlabel('Time', color='b', fontsize=22)
             plt.ylabel('Price', color='b', fontsize=22)
@@ -187,7 +187,7 @@ class Indices:
             plt.grid()
             plt.savefig('bollinger_bands.png', bbox_inches='tight', facecolor='orange')
             plt.show()
-            return data
+            return data1
         except Exception as e:
             return e
 
@@ -213,11 +213,11 @@ class Indices:
             data['EMA_12'] = data['price'].ewm(span=12, adjust=False).mean()
             data['EMA_26'] = data['price'].ewm(span=26, adjust=False).mean()
             data['MACD'] = data['EMA_12'] - data['EMA_26']
-            data.dropna(inplace=True)
+            data1 = data.dropna()
 
             fig, ax = plt.subplots(figsize=(14, 9))
-            plt.plot(data['date'], data['price'], color='r', label='Price')
-            plt.plot(data['date'], data['MACD'], color='b', label='MACD')
+            plt.plot(data1['date'], data1['price'], color='r', label='Price')
+            plt.plot(data1['date'], data1['MACD'], color='b', label='MACD')
             plt.legend()
             plt.title('Price and MACD Plot', fontsize=28, color='b')
             plt.xlabel('Time', color='b', fontsize=19)
@@ -226,7 +226,7 @@ class Indices:
             fig.set_facecolor('orange')
             plt.show()
 
-            return data
+            return data1
         except Exception as e:
             return print('MACD Error - {}'.format(e))
 
@@ -240,10 +240,10 @@ class Indices:
         try:
             data = df
             data['SMA'] = data['price'].rolling(days).mean()
-            data.dropna(inplace=True)
+            data1 = data.dropna()
             fig, ax = plt.subplots(figsize=(14, 9))
-            plt.plot(data['date'], data['price'], color='r', label='Price')
-            plt.plot(data['date'], data['SMA'], color='b', label='SMA')
+            plt.plot(data1['date'], data1['price'], color='r', label='Price')
+            plt.plot(data1['date'], data1['SMA'], color='b', label='SMA')
             plt.legend()
             plt.title('Price and SMA Plot', fontsize=28, color='b')
             plt.xlabel('Time', color='b', fontsize=19)
@@ -251,7 +251,7 @@ class Indices:
             plt.savefig('sma.png', bbox_inches='tight', facecolor='orange')
             fig.set_facecolor('orange')
             plt.show()
-            return data
+            return data1
         except Exception as e:
             return print('SMA Error - {}'.format(e))
 
@@ -270,10 +270,11 @@ class Indices:
             for period in periods:
                 data['EMA_{}'.format(period)] = data['price'].ewm(span=period, adjust=False).mean()
                 data = data.dropna()
+            data1 = data
             fig, ax = plt.subplots(figsize=(14, 9))
-            plt.plot(data['date'], data['price'], color='r', label='Price')
+            plt.plot(data1['date'], data1['price'], color='r', label='Price')
             for period in periods:
-                plt.plot(data['date'], data['EMA_{}'.format(period)], label='EMA_{}'.format(period))
+                plt.plot(data1['date'], data1['EMA_{}'.format(period)], label='EMA_{}'.format(period))
             plt.legend()
             plt.title('Price and EMA Plot', fontsize=28, color='b')
             plt.xlabel('Time', color='b', fontsize=19)
@@ -281,7 +282,7 @@ class Indices:
             plt.savefig('ema.png', bbox_inches='tight', facecolor='orange')
             fig.set_facecolor('orange')
             plt.show()
-            return data
+            return data1
         except Exception as e:
             return print('EMA Error - {}'.format(e))
 
