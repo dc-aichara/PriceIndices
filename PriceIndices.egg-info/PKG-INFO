@@ -1,12 +1,12 @@
 Metadata-Version: 2.1
 Name: PriceIndices
-Version: 1.0.0
+Version: 1.0.1
 Summary: A python package to get historical market data of cryptocurrencies from CoinMarketCap, and calculate & plot different indicators.
 Home-page: https://github.com/dc-aichara/Price-Indices
 Author: Dayal Chand Aichara
 Author-email: dc.aichara@gmail.com
 License: MIT
-Download-URL: https://github.com/dc-aichara/PriceIndices/archive/v-1.0.0.tar.gz
+Download-URL: https://github.com/dc-aichara/PriceIndices/archive/v-1.0.1.tar.gz
 Description: 
         
         
