@@ -90,7 +90,7 @@ class Indices:
         try:
             data = df
             data = data.sort_values(by='date').reset_index(drop=True)
-            data['price_change'] = data['price'] - df['price'].shift(1)
+            data['price_change'] = data['price'] - data['price'].shift(1)
             data.dropna(inplace=True)
             data['gain'] = data['price_change'].apply(lambda x: x if x >= 0 else 0)
 
@@ -100,11 +100,11 @@ class Indices:
 
             data['loss_average'] = data['loss'].rolling(14).mean()
 
-            data['RS'] = data['gain_average'] / df['loss_average']
+            data['RS'] = data['gain_average'] / data['loss_average']
 
-            data['RSI_1'] = 100 * (1 - (1 / (1 + df['RS'])))
+            data['RSI_1'] = 100 * (1 - (1 / (1 + data['RS'])))
 
-            data['RS_Smooth'] = (data['gain_average'].shift(1) * 13 + df['gain']) / (
+            data['RS_Smooth'] = (data['gain_average'].shift(1) * 13 + data['gain']) / (
                         data['loss_average'].shift(1) * 13 + data['loss'])
 
             data['RSI_2'] = 100 * (1 - (1 / (1 + data['RS_Smooth'])))
@@ -175,11 +175,11 @@ class Indices:
             data = data.sort_values(by='date').reset_index(drop=True)
             data['SMA'] = data['price'].rolling(days).mean()
             data['SD'] = data['price'].rolling(days).std()
-            data['pluse'] = data['SMA'] + data['SD']*2
+            data['plus'] = data['SMA'] + data['SD']*2
             data['minus'] = data['SMA'] - data['SMA']*2
             data1 = data.sort_values(by='date', ascending=False).reset_index(drop=True)
             fig, ax = plt.subplots(figsize=(16, 12))
-            plt.plot(data1['date'], data1['pluse'], color='g')
+            plt.plot(data1['date'], data1['plus'], color='g')
             plt.plot(data1['date'], data1['minus'], color='g')
             plt.plot(data1['date'], data1['price'], color='orange')
             plt.legend()
