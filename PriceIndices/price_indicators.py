@@ -6,6 +6,7 @@ warnings.filterwarnings('ignore')
 
 
 class Indices:
+
     def get_bvol_index(df):
 
         """
@@ -88,6 +89,7 @@ class Indices:
         """
         try:
             data = df
+            data = data.sort_values(by='date').reset_index(drop=True)
             data['price_change'] = data['price'] - df['price'].shift(1)
             data.dropna(inplace=True)
             data['gain'] = data['price_change'].apply(lambda x: x if x >= 0 else 0)
@@ -107,8 +109,9 @@ class Indices:
 
             data['RSI_2'] = 100 * (1 - (1 / (1 + data['RS_Smooth'])))
             data = data.fillna(0).reset_index(drop=True)
-            data1 = data
+            data1 = data.sort_values(by='date', ascending=False).reset_index(drop=True)
             return data1
+
         except Exception as e:
             return e
 
@@ -169,11 +172,12 @@ class Indices:
 
         try:
             data = df
+            data = data.sort_values(by='date').reset_index(drop=True)
             data['SMA'] = data['price'].rolling(days).mean()
             data['SD'] = data['price'].rolling(days).std()
             data['pluse'] = data['SMA'] + data['SD']*2
             data['minus'] = data['SMA'] - data['SMA']*2
-            data1 = data
+            data1 = data.sort_values(by='date', ascending=False).reset_index(drop=True)
             fig, ax = plt.subplots(figsize=(16, 12))
             plt.plot(data1['date'], data1['pluse'], color='g')
             plt.plot(data1['date'], data1['minus'], color='g')
@@ -188,6 +192,7 @@ class Indices:
             plt.savefig('bollinger_bands.png', bbox_inches='tight', facecolor='orange')
             plt.show()
             return data1
+
         except Exception as e:
             return e
 
@@ -227,6 +232,7 @@ class Indices:
             plt.show()
 
             return data1
+
         except Exception as e:
             return print('MACD Error - {}'.format(e))
 
@@ -239,8 +245,10 @@ class Indices:
         """
         try:
             data = df
+            data = data.sort_values(by='date').reset_index(drop=True)
             data['SMA'] = data['price'].rolling(days).mean()
             data1 = data.dropna()
+            data1 = data1.sort_values(by='date', ascending=False).reset_index(drop=True)
             fig, ax = plt.subplots(figsize=(14, 9))
             plt.plot(data1['date'], data1['price'], color='r', label='Price')
             plt.plot(data1['date'], data1['SMA'], color='b', label='SMA')
@@ -252,6 +260,7 @@ class Indices:
             fig.set_facecolor('orange')
             plt.show()
             return data1
+
         except Exception as e:
             return print('SMA Error - {}'.format(e))
 
@@ -283,6 +292,7 @@ class Indices:
             fig.set_facecolor('orange')
             plt.show()
             return data1
+
         except Exception as e:
             return print('EMA Error - {}'.format(e))
 
