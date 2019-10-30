@@ -16,7 +16,7 @@ class Indices:
           Reference: www.moneycontrol.com
 
           Calculate Cryptocureency price's 30 days volatile index
-          :param data: Pandas DataFrame with price column
+          :param df: Pandas DataFrame with price column
           :return: pandas DataFrame
           """
 
@@ -36,7 +36,9 @@ class Indices:
 
     def get_bvol_graph(df):
 
-        """Make a line graph of bvol index with respect to time"""
+        """Make a line graph of bvol index with respect to time
+        :param df: Pandas DataFrame with price column
+        """
         try:
             data = df
             fig, ax = plt.subplots(figsize=(14, 12))
@@ -64,6 +66,7 @@ class Indices:
             plt.suptitle('Price  and  Volatility Index', color='red', fontsize=24)
             plt.savefig('bvol_index.png', bbox_inches='tight', facecolor='orange')
             return plt.show()
+
         except Exception as e:
             return e
 
@@ -83,8 +86,7 @@ class Indices:
 
         Reference:
                     https://economictimes.indiatimes.com/
-        :param price_data: Pandas DataFrame with price column
-
+        :param df: Pandas DataFrame with price column
         :return: pandas DataFrame
         """
         try:
@@ -167,7 +169,9 @@ class Indices:
                     https://economictimes.indiatimes.com/
                     https://www.bollingerbands.com/bollinger-bands
         :param days: int
-        :param price_data: Pandas DataFrame with price column
+        :param df: Pandas DataFrame with price column
+        :param plot: True or False
+        :param days: int
         :return: a pandas DataFrame and save a plot to local project directory as 'bollinger_bands.png'.
         """
 
@@ -213,7 +217,8 @@ class Indices:
 
         Reference:
             https://economictimes.indiatimes.com/
-        :param price_data: Pandas DataFrame with price column
+        :param df: Pandas DataFrame with price column
+        :param plot: True or False
         :return: pandas DataFrame
         """
         try:
@@ -243,8 +248,9 @@ class Indices:
     def get_simple_moving_average(df, days=15, plot=None):
         """
         Simple moving average of given days
-        :param price_data: pandas DataFrame
+        :param df: pandas DataFrame
         :param days: int
+        :param plot: True or False
         :return: pandas DataFrame
         """
         try:
@@ -276,8 +282,9 @@ class Indices:
         Like all moving averages, this technical indicator is used to produce buy and sell signals based on crossovers and divergences from the historical average.
         Traders often use several different EMA days, for instance, 20-day, 30-day, 90-day, and 200-day moving averages.
         Reference: https://www.investopedia.com/
-        :param price_data: Pandas DataFrame with price column
-        :param period: a list of periods (int)
+        :param df: Pandas DataFrame with price column
+        :param periods: a list of periods (int)
+        :param plot: True or False
         :return:
         """
         try:

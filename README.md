@@ -128,7 +128,6 @@ This will also save Bollingers bands plot in your working directory as 'bollinge
 
 ```
 
-
 <img src='plots/bollinger_bands.png'>
 
 
