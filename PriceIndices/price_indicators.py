@@ -146,10 +146,11 @@ class Indices:
             plt.suptitle('Price  and  Relative  Strength Index', color='red', fontsize=24)
             plt.savefig('rsi.png', bbox_inches='tight', facecolor='orange')
             return plt.show()
+
         except Exception as e:
             return e
 
-    def get_bollinger_bands(df, days=20):
+    def get_bollinger_bands(df, days=20, plot=None):
         """
         Type:
             Trend, volatility, momentum indicator
@@ -178,25 +179,27 @@ class Indices:
             data['plus'] = data['SMA'] + data['SD']*2
             data['minus'] = data['SMA'] - data['SMA']*2
             data1 = data.sort_values(by='date', ascending=False).reset_index(drop=True)
-            fig, ax = plt.subplots(figsize=(16, 12))
-            plt.plot(data1['date'], data1['plus'], color='g')
-            plt.plot(data1['date'], data1['minus'], color='g')
-            plt.plot(data1['date'], data1['price'], color='orange')
-            plt.legend()
-            plt.xlabel('Time', color='b', fontsize=22)
-            plt.ylabel('Price', color='b', fontsize=22)
-            plt.title('Bollinger Bands', color='b', fontsize=27)
-            plt.tick_params(labelsize=17)
-            fig.set_facecolor('yellow')
-            plt.grid()
-            plt.savefig('bollinger_bands.png', bbox_inches='tight', facecolor='orange')
-            plt.show()
+            while plot:
+                fig, ax = plt.subplots(figsize=(16, 12))
+                plt.plot(data1['date'], data1['plus'], color='g')
+                plt.plot(data1['date'], data1['minus'], color='g')
+                plt.plot(data1['date'], data1['price'], color='orange')
+                plt.legend()
+                plt.xlabel('Time', color='b', fontsize=22)
+                plt.ylabel('Price', color='b', fontsize=22)
+                plt.title('Bollinger Bands', color='b', fontsize=27)
+                plt.tick_params(labelsize=17)
+                fig.set_facecolor('yellow')
+                plt.grid()
+                plt.savefig('bollinger_bands.png', bbox_inches='tight', facecolor='orange')
+                plt.show()
+                break
             return data1
 
         except Exception as e:
             return e
 
-    def get_moving_average_convergence_divergence(df):
+    def get_moving_average_convergence_divergence(df, plot=None):
         """
         Type
             Trend and momentum indicator
@@ -220,23 +223,24 @@ class Indices:
             data['MACD'] = data['EMA_12'] - data['EMA_26']
             data1 = data.dropna()
 
-            fig, ax = plt.subplots(figsize=(14, 9))
-            plt.plot(data1['date'], data1['price'], color='r', label='Price')
-            plt.plot(data1['date'], data1['MACD'], color='b', label='MACD')
-            plt.legend()
-            plt.title('Price and MACD Plot', fontsize=28, color='b')
-            plt.xlabel('Time', color='b', fontsize=19)
-            plt.ylabel('Price', color='b', fontsize=19)
-            plt.savefig('macd.png', bbox_inches='tight', facecolor='orange')
-            fig.set_facecolor('orange')
-            plt.show()
-
+            while plot:
+                fig, ax = plt.subplots(figsize=(14, 9))
+                plt.plot(data1['date'], data1['price'], color='r', label='Price')
+                plt.plot(data1['date'], data1['MACD'], color='b', label='MACD')
+                plt.legend()
+                plt.title('Price and MACD Plot', fontsize=28, color='b')
+                plt.xlabel('Time', color='b', fontsize=19)
+                plt.ylabel('Price', color='b', fontsize=19)
+                plt.savefig('macd.png', bbox_inches='tight', facecolor='orange')
+                fig.set_facecolor('orange')
+                plt.show()
+                break
             return data1
 
         except Exception as e:
             return print('MACD Error - {}'.format(e))
 
-    def get_simple_moving_average(df, days=15):
+    def get_simple_moving_average(df, days=15, plot=None):
         """
         Simple moving average of given days
         :param price_data: pandas DataFrame
@@ -249,22 +253,24 @@ class Indices:
             data['SMA'] = data['price'].rolling(days).mean()
             data1 = data.dropna()
             data1 = data1.sort_values(by='date', ascending=False).reset_index(drop=True)
-            fig, ax = plt.subplots(figsize=(14, 9))
-            plt.plot(data1['date'], data1['price'], color='r', label='Price')
-            plt.plot(data1['date'], data1['SMA'], color='b', label='SMA')
-            plt.legend()
-            plt.title('Price and SMA Plot', fontsize=28, color='b')
-            plt.xlabel('Time', color='b', fontsize=19)
-            plt.ylabel('Price', color='b', fontsize=19)
-            plt.savefig('sma.png', bbox_inches='tight', facecolor='orange')
-            fig.set_facecolor('orange')
-            plt.show()
+            while plot:
+                fig, ax = plt.subplots(figsize=(14, 9))
+                plt.plot(data1['date'], data1['price'], color='r', label='Price')
+                plt.plot(data1['date'], data1['SMA'], color='b', label='SMA')
+                plt.legend()
+                plt.title('Price and SMA Plot', fontsize=28, color='b')
+                plt.xlabel('Time', color='b', fontsize=19)
+                plt.ylabel('Price', color='b', fontsize=19)
+                plt.savefig('sma.png', bbox_inches='tight', facecolor='orange')
+                fig.set_facecolor('orange')
+                plt.show()
+                break
             return data1
 
         except Exception as e:
             return print('SMA Error - {}'.format(e))
 
-    def get_exponential_moving_average(df, periods=[20]):
+    def get_exponential_moving_average(df, periods=[20], plot=None):
         """
         The EMA is a moving average that places a greater weight and significance on the most recent data points.
         Like all moving averages, this technical indicator is used to produce buy and sell signals based on crossovers and divergences from the historical average.
@@ -280,17 +286,19 @@ class Indices:
                 data['EMA_{}'.format(period)] = data['price'].ewm(span=period, adjust=False).mean()
                 data = data.dropna()
             data1 = data
-            fig, ax = plt.subplots(figsize=(14, 9))
-            plt.plot(data1['date'], data1['price'], color='r', label='Price')
-            for period in periods:
-                plt.plot(data1['date'], data1['EMA_{}'.format(period)], label='EMA_{}'.format(period))
-            plt.legend()
-            plt.title('Price and EMA Plot', fontsize=28, color='b')
-            plt.xlabel('Time', color='b', fontsize=19)
-            plt.ylabel('Price/EMA', color='b', fontsize=19)
-            plt.savefig('ema.png', bbox_inches='tight', facecolor='orange')
-            fig.set_facecolor('orange')
-            plt.show()
+            while plot:
+                fig, ax = plt.subplots(figsize=(14, 9))
+                plt.plot(data1['date'], data1['price'], color='r', label='Price')
+                for period in periods:
+                    plt.plot(data1['date'], data1['EMA_{}'.format(period)], label='EMA_{}'.format(period))
+                plt.legend()
+                plt.title('Price and EMA Plot', fontsize=28, color='b')
+                plt.xlabel('Time', color='b', fontsize=19)
+                plt.ylabel('Price/EMA', color='b', fontsize=19)
+                plt.savefig('ema.png', bbox_inches='tight', facecolor='orange')
+                fig.set_facecolor('orange')
+                plt.show()
+                break
             return data1
 
         except Exception as e:

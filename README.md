@@ -113,7 +113,7 @@ This will return a plot of RSI against time and also save RSI plot in your worki
 - #### Get Bollinger Bands and its plot
 
 ```python
->>> df_bb = Indices.get_bollinger_bands(price_data , 20) 
+>>> df_bb = Indices.get_bollinger_bands(price_data , 20, plot=True) 
 >>> df_bb.tail()
            date   price       SMA         SD       pluse     minus
 2243 2013-05-02  105.21  115.2345   6.339257  127.913013 -115.2345
@@ -136,7 +136,7 @@ This will also save Bollingers bands plot in your working directory as 'bollinge
 
 ```python
 
->>> df_macd = Indices.get_moving_average_convergence_divergence(price_data)
+>>> df_macd = Indices.get_moving_average_convergence_divergence(price_data, plot=True)
 """This will return a pandas DataFrame and save EMA plot as 'macd.png' in working directory. 
 """"
 >>> df_macd.head()
@@ -154,7 +154,7 @@ This will also save Bollingers bands plot in your working directory as 'bollinge
 - #### Get Simple Moving Average (SMA) and its plot
 
 ```python
->>> df_sma = Indices.get_simple_moving_average(price_data, 20) 
+>>> df_sma = Indices.get_simple_moving_average(price_data, 20, plot=True) 
 """This will return a pandas DataFrame and save EMA plot as 'sma.png' in working directory. 
 """"
 >>> df_sma.head()
@@ -172,7 +172,7 @@ This will also save Bollingers bands plot in your working directory as 'bollinge
 - ### Get Exponential Moving Average (EMA) and its plot
 
 ```python
->>> df_ema = Indices.get_exponential_moving_average(price_data, [20,70])
+>>> df_ema = Indices.get_exponential_moving_average(price_data, [20,70], plot=True)
 """This will return a pandas DataFrame and save EMA plot as 'ema.png' in working directory. 
 """"
 
