@@ -1,12 +1,12 @@
 Metadata-Version: 2.1
 Name: PriceIndices
-Version: 1.0.3
+Version: 1.1.0
 Summary: A python package to get historical market data of cryptocurrencies from CoinMarketCap, and calculate & plot different indicators.
 Home-page: https://github.com/dc-aichara/Price-Indices
 Author: Dayal Chand Aichara
 Author-email: dc.aichara@gmail.com
 License: MIT
-Download-URL: https://github.com/dc-aichara/PriceIndices/archive/v-1.0.3.tar.gz
+Download-URL: https://github.com/dc-aichara/PriceIndices/archive/v-1.1.0.tar.gz
 Description: 
         
         
@@ -70,12 +70,12 @@ Description:
         
         >>> df_bvol = Indices.get_bvol_index(price_data )  
         >>> df_bvol.head()
-                date     price  BVOL_Index
-        0 2019-06-22  10701.69    0.636482
-        1 2019-06-21  10144.56    0.636414
-        2 2019-06-20   9527.16    0.619886
-        3 2019-06-19   9273.52    0.608403
-        4 2019-06-18   9081.76    0.604174
+                date    price  BVOL_Index
+        0 2019-10-29  9427.69    0.711107
+        1 2019-10-28  9256.15    0.707269
+        2 2019-10-27  9551.71    0.709765
+        3 2019-10-26  9244.97    0.698544
+        4 2019-10-25  8660.70    0.692656
         
         ```
         
@@ -97,13 +97,14 @@ Description:
         
         >>> df_rsi = Indices.get_rsi(price_data)   
         
-        >>> print(df_rsi.tail())
-                   date   price  price_change   gain   loss  gain_average  loss_average        RS      RSI_1  RS_Smooth      RSI_2
-        2217 2013-05-02  105.21          7.46   7.46   0.00      1.532143      2.500000  0.612857  37.998229   0.561117  35.943306
-        2218 2013-05-01  116.99         11.78  11.78   0.00      2.373571      2.175714  1.090939  52.174596   0.975319  49.375257
-        2219 2013-04-30  139.00         22.01  22.01   0.00      3.945714      1.981429  1.991348  66.570258   1.869110  65.145981
-        2220 2013-04-29  144.54          5.54   5.54   0.00      3.878571      1.981429  1.957462  66.187226   2.206422  68.812592
-        2221 2013-04-28  134.21        -10.33   0.00  10.33      3.878571      2.506429  1.547449  60.745050   1.397158  58.283931
+        >>> print(df_rsi.head())
+                date    price       RSI_1  RS_Smooth      RSI_2
+        0 2019-10-30  9205.73      64.641855   1.624958  61.904151
+        1 2019-10-29  9427.69      65.707097   1.709072  63.086984
+        2 2019-10-28  9256.15      61.333433   1.597755  61.505224
+        3 2019-10-27  9551.71      66.873327   2.012345  66.803267
+        4 2019-10-26  9244.97      63.535368   1.791208  64.173219
+        
         
         ```
         
@@ -123,20 +124,20 @@ Description:
         
         ```python
         >>> df_bb = Indices.get_bollinger_bands(price_data , 20, plot=True) 
-        >>> df_bb.tail()
-                   date   price       SMA         SD       pluse     minus
-        2243 2013-05-02  105.21  115.2345   6.339257  127.913013 -115.2345
-        2244 2013-05-01  116.99  114.9400   6.097587  127.135174 -114.9400
-        2245 2013-04-30  139.00  115.7900   8.016499  131.822998 -115.7900
-        2246 2013-04-29  144.54  116.9175  10.217936  137.353372 -116.9175
-        2247 2013-04-28  134.21  117.4530  10.842616  139.138233 -117.4530
+        >>> df_bb.head()
+                date    price     BB_upper   BB_lower
+        0 2019-10-30  9205.73  9635.043581 -8428.5855
+        1 2019-10-29  9427.69  9550.707153 -8397.6225
+        2 2019-10-28  9256.15  9408.263164 -8356.0250
+        3 2019-10-27  9551.71  9268.466516 -8304.6565
+        4 2019-10-26  9244.97  9003.752779 -8239.3520
+        
         
         """
         This will also save Bollingers bands plot in your working directory as 'bollinger_bands.png'
         """
         
         ```
-        
         
         <img src='plots/bollinger_bands.png'>
         
@@ -149,12 +150,13 @@ Description:
         """This will return a pandas DataFrame and save EMA plot as 'macd.png' in working directory. 
         """"
         >>> df_macd.head()
-                 date    price      EMA_12        EMA_26        MACD
-        19 2019-06-18  9081.76    10415.979340  10886.327599 -470.348259
-        20 2019-06-17  9320.35    10247.420980  10770.329259 -522.908279
-        21 2019-06-16  8994.49    10054.662368  10638.785610 -584.123242
-        22 2019-06-15  8838.38    9867.542004   10505.422231 -637.880228
-        23 2019-06-14  8693.83    9686.970926   10371.230214 -684.259288
+                date    price       MACD
+        0 2019-10-30  9205.73   0.000000
+        1 2019-10-29  9427.69  17.706211
+        2 2019-10-28  9256.15  17.692715
+        3 2019-10-27  9551.71  41.057952
+        4 2019-10-26  9244.97  34.426864
+        
         
         ```
         
@@ -167,12 +169,13 @@ Description:
         """This will return a pandas DataFrame and save EMA plot as 'sma.png' in working directory. 
         """"
         >>> df_sma.head()
-                 date    price         SMA
-        19 2019-06-18  9081.76  10998.4180
-        20 2019-06-17  9320.35  10891.8930
-        21 2019-06-16  8994.49  10781.1900
-        22 2019-06-15  8838.38  10674.1860
-        23 2019-06-14  8693.83  10548.1055
+                date    price          SMA
+        0 2019-10-30  9205.73  8467.488000
+        1 2019-10-29  9427.69  8400.797333
+        2 2019-10-28  9256.15  8330.597333
+        3 2019-10-27  9551.71  8268.254667
+        4 2019-10-26  9244.97  8187.244667
+        
         
         ```
         
@@ -186,12 +189,14 @@ Description:
         """"
         
         >>> df_ema.head()
-                date     price        EMA_20        EMA_70
-        0 2019-07-07  11450.85  11450.850000  11450.850000
-        1 2019-07-06  11208.55  11427.773810  11444.024648
-        2 2019-07-05  10978.46  11384.982018  11430.910151
-        3 2019-07-04  11215.44  11368.835159  11424.840569
-        4 2019-07-03  11961.27  11425.257525  11439.951257
+                date    price       EMA_20       EMA_70
+        0 2019-10-30  9205.73  9205.730000  9205.730000
+        1 2019-10-29  9427.69  9226.869048  9211.982394
+        2 2019-10-28  9256.15  9229.657710  9213.226552
+        3 2019-10-27  9551.71  9260.329356  9222.761297
+        4 2019-10-26  9244.97  9258.866561  9223.386895
+        >>> 
+        
         
         ```
         
@@ -219,7 +224,7 @@ Description:
         
 Keywords: Volatility,blockchain,cryptocurrency,Price,trading,CoinMarketCap,Indices,Indicators
 Platform: UNKNOWN
-Classifier: Development Status :: 4 - Beta
+Classifier: Development Status :: 5 - Production/Stable
 Classifier: Intended Audience :: Education
 Classifier: Topic :: Software Development :: Build Tools
 Classifier: License :: OSI Approved :: MIT License
