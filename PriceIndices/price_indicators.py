@@ -27,10 +27,10 @@ class Indices:
             ln_ratio_btc = pd.DataFrame(list(np.diff(np.log(data['price']))))
             bvol_btc = pd.DataFrame(ln_ratio_btc.rolling(30).std() * np.sqrt(365))
             bvol_btc.columns = ['BVOL_Index']
-            data1 = pd.concat([data, bvol_btc], join='inner', axis=1)
-            data1 = data1.dropna()
-            data1 = data1.sort_values(by='date', ascending=False).reset_index(drop=True)
-            return data1
+            data = pd.concat([data, bvol_btc], join='inner', axis=1)
+            data = data.dropna()
+            data = data.sort_values(by='date', ascending=False).reset_index(drop=True)
+            return data
         except Exception as e:
             return e
 
@@ -40,7 +40,7 @@ class Indices:
         :param df: Pandas DataFrame with price column
         """
         try:
-            data = df
+            data = df.copy()
             fig, ax = plt.subplots(figsize=(14, 12))
             rect = fig.patch
             rect.set_facecolor('yellow')
@@ -90,7 +90,7 @@ class Indices:
         :return: pandas DataFrame
         """
         try:
-            data = df
+            data = df.copy()
             data = data.sort_values(by='date').reset_index(drop=True)
             data['price_change'] = data['price'] - data['price'].shift(1)
             data.dropna(inplace=True)
@@ -111,15 +111,16 @@ class Indices:
 
             data['RSI_2'] = 100 * (1 - (1 / (1 + data['RS_Smooth'])))
             data = data.fillna(0).reset_index(drop=True)
-            data1 = data.sort_values(by='date', ascending=False).reset_index(drop=True)
-            return data1
+            data.drop(['gain', 'loss', 'price_change', 'gain_average', 'loss_average', 'RS'], axis=1, inplace=True)
+            data = data.sort_values(by='date', ascending=False).reset_index(drop=True)
+            return data
 
         except Exception as e:
             return e
 
-    def get_rsi_graph(self, rsi_data):
+    def get_rsi_graph(rsi_data):
         try:
-            df = rsi_data
+            df = rsi_data.copy()
             fig, ax = plt.subplots(figsize=(14, 12))
             rect = fig.patch
             rect.set_facecolor('yellow')
@@ -176,18 +177,19 @@ class Indices:
         """
 
         try:
-            data = df
+            data = df.copy()
             data = data.sort_values(by='date').reset_index(drop=True)
             data['SMA'] = data['price'].rolling(days).mean()
             data['SD'] = data['price'].rolling(days).std()
-            data['plus'] = data['SMA'] + data['SD']*2
-            data['minus'] = data['SMA'] - data['SMA']*2
-            data1 = data.sort_values(by='date', ascending=False).reset_index(drop=True)
+            data['BB_upper'] = data['SMA'] + data['SD']*2
+            data['BB_lower'] = data['SMA'] - data['SMA']*2
+            data.drop(['SD', 'SMA'], axis=1, inplace=True)
+            data = data.sort_values(by='date', ascending=False).reset_index(drop=True)
             while plot:
                 fig, ax = plt.subplots(figsize=(16, 12))
-                plt.plot(data1['date'], data1['plus'], color='g')
-                plt.plot(data1['date'], data1['minus'], color='g')
-                plt.plot(data1['date'], data1['price'], color='orange')
+                plt.plot(data['date'], data['BB_upper'], color='g')
+                plt.plot(data['date'], data['BB_lower'], color='g')
+                plt.plot(data['date'], data['price'], color='orange')
                 plt.legend()
                 plt.xlabel('Time', color='b', fontsize=22)
                 plt.ylabel('Price', color='b', fontsize=22)
@@ -198,7 +200,7 @@ class Indices:
                 plt.savefig('bollinger_bands.png', bbox_inches='tight', facecolor='orange')
                 plt.show()
                 break
-            return data1
+            return data
 
         except Exception as e:
             return e
@@ -222,16 +224,17 @@ class Indices:
         :return: pandas DataFrame
         """
         try:
-            data = df
+            data = df.copy()
             data['EMA_12'] = data['price'].ewm(span=12, adjust=False).mean()
             data['EMA_26'] = data['price'].ewm(span=26, adjust=False).mean()
             data['MACD'] = data['EMA_12'] - data['EMA_26']
-            data1 = data.dropna()
+            data.drop(['EMA_12', 'EMA_26'], axis=1, inplace=True)
+            data = data.dropna()
 
             while plot:
                 fig, ax = plt.subplots(figsize=(14, 9))
-                plt.plot(data1['date'], data1['price'], color='r', label='Price')
-                plt.plot(data1['date'], data1['MACD'], color='b', label='MACD')
+                plt.plot(data['date'], data['price'], color='r', label='Price')
+                plt.plot(data['date'], data['MACD'], color='b', label='MACD')
                 plt.legend()
                 plt.title('Price and MACD Plot', fontsize=28, color='b')
                 plt.xlabel('Time', color='b', fontsize=19)
@@ -240,7 +243,7 @@ class Indices:
                 fig.set_facecolor('orange')
                 plt.show()
                 break
-            return data1
+            return data
 
         except Exception as e:
             return print('MACD Error - {}'.format(e))
@@ -254,15 +257,15 @@ class Indices:
         :return: pandas DataFrame
         """
         try:
-            data = df
+            data = df.copy()
             data = data.sort_values(by='date').reset_index(drop=True)
             data['SMA'] = data['price'].rolling(days).mean()
-            data1 = data.dropna()
-            data1 = data1.sort_values(by='date', ascending=False).reset_index(drop=True)
+            data = data.dropna()
+            data = data.sort_values(by='date', ascending=False).reset_index(drop=True)
             while plot:
                 fig, ax = plt.subplots(figsize=(14, 9))
-                plt.plot(data1['date'], data1['price'], color='r', label='Price')
-                plt.plot(data1['date'], data1['SMA'], color='b', label='SMA')
+                plt.plot(data['date'], data['price'], color='r', label='Price')
+                plt.plot(data['date'], data['SMA'], color='b', label='SMA')
                 plt.legend()
                 plt.title('Price and SMA Plot', fontsize=28, color='b')
                 plt.xlabel('Time', color='b', fontsize=19)
@@ -271,7 +274,7 @@ class Indices:
                 fig.set_facecolor('orange')
                 plt.show()
                 break
-            return data1
+            return data
 
         except Exception as e:
             return print('SMA Error - {}'.format(e))
@@ -288,16 +291,14 @@ class Indices:
         :return:
         """
         try:
-            data = df
+            data = df.copy()
             for period in periods:
                 data['EMA_{}'.format(period)] = data['price'].ewm(span=period, adjust=False).mean()
-                data = data.dropna()
-            data1 = data
             while plot:
                 fig, ax = plt.subplots(figsize=(14, 9))
-                plt.plot(data1['date'], data1['price'], color='r', label='Price')
+                plt.plot(data['date'], data['price'], color='r', label='Price')
                 for period in periods:
-                    plt.plot(data1['date'], data1['EMA_{}'.format(period)], label='EMA_{}'.format(period))
+                    plt.plot(data['date'], data['EMA_{}'.format(period)], label='EMA_{}'.format(period))
                 plt.legend()
                 plt.title('Price and EMA Plot', fontsize=28, color='b')
                 plt.xlabel('Time', color='b', fontsize=19)
@@ -306,7 +307,7 @@ class Indices:
                 fig.set_facecolor('orange')
                 plt.show()
                 break
-            return data1
+            return data
 
         except Exception as e:
             return print('EMA Error - {}'.format(e))
