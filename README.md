@@ -200,6 +200,7 @@ This will also save Bollingers bands plot in your working directory as 'bollinge
 
 ### Check out [webpage](https://dc-aichara.github.io/PriceIndices/) of PriceIndices package. 
 
+### I have created a [cryptocurrency technical indicators dashboard](https://crypto-price-indicators.herokuapp.com/) which uses this library. 
 ### Disclaimer: 
 
 ```
