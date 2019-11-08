@@ -19,10 +19,10 @@ class MarketHistory:
 
     def __request(self, url):
         try:
-            response = self.session.get(url, timeout = self.request_timeout)
+            response = self.session.get(url, timeout=self.request_timeout)
             response.raise_for_status()
             data = pd.read_html(response.content)
-            df = pd.DataFrame(data[0])
+            df = pd.DataFrame(data[2])
             df['Date'] = pd.to_datetime(df['Date'])
             return df
         except Exception as e:
