@@ -1,5 +1,6 @@
+# PriceIndices
 
-# <center >![](https://img.shields.io/badge/PriceIndices-1.1.1-blue) </center>
+![](https://img.shields.io/badge/PriceIndices-1.1.1-blue)
 
 ## Installation 
 
