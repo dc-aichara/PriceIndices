@@ -7,7 +7,7 @@ with open(path.join(this_directory, "README.md"), encoding="utf-8") as f:
 setuptools.setup(
     name="PriceIndices",
     packages=["PriceIndices"],
-    version="1.2.0",
+    version="1.2.1",
     license="MIT",
     description="A python package to get historical market data of "
                 "cryptocurrencies from CoinMarketCap, and calculate & plot "
@@ -15,7 +15,7 @@ setuptools.setup(
     author="Dayal Chand Aichara",
     author_email="dc.aichara@gmail.com",
     url="https://github.com/dc-aichara/Price-Indices",
-    download_url="https://github.com/dc-aichara/PriceIndices/archive/v-1.2.0.tar.gz",
+    download_url="https://github.com/dc-aichara/PriceIndices/archive/v-1.2.1.tar.gz",
     keywords=[
         "Volatility",
         "blockchain",
