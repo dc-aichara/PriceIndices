@@ -1,6 +1,6 @@
 
 
-[![](https://img.shields.io/badge/PriceIndices-1.1.1-blue)](https://github.com/dc-aichara/PriceIndices)
+[![](https://img.shields.io/badge/PriceIndices-1.2.0-blue)](https://github.com/dc-aichara/PriceIndices)
 
 ## Installation 
 
