@@ -46,7 +46,7 @@ from PriceIndices import MarketHistory, Indices
 
 >>> price_data  =  history.get_price('bitcoin', '20130428', '20190624')  
 
->>> price_data .head()
+>>> price_data.head()
         date     price
 0 2019-06-23  10855.37
 1 2019-06-22  10701.69
@@ -59,8 +59,8 @@ from PriceIndices import MarketHistory, Indices
 - #### Calculate Volatility Index
 
 ```python
-
->>> df_bvol = Indices.get_bvol_index(price_data )  
+indices = Indices(df=price_data)
+>>> df_bvol = indices.get_vola_index(price_data )  
 >>> df_bvol.head()
         date    price  BVOL_Index
 0 2019-10-29  9427.69    0.711107
@@ -74,7 +74,7 @@ from PriceIndices import MarketHistory, Indices
 - #### Plot Volatility Index
 
 ```python
->>> Indices.get_bvol_graph(df_bvol)   
+>>> indices.get_vola_graph(df_bvol)   
 
 """
 This will return a plot of BVOL index against time also save volatility index plot in your working directory as 'bvol_index.png'
@@ -87,7 +87,7 @@ This will return a plot of BVOL index against time also save volatility index pl
 
 ```python
 
->>> df_rsi = Indices.get_rsi(price_data)   
+>>> df_rsi = indices.get_rsi(price_data)   
 
 >>> print(df_rsi.head())
         date    price       RSI_1  RS_Smooth      RSI_2
@@ -103,7 +103,7 @@ This will return a plot of BVOL index against time also save volatility index pl
 - #### Plot RSI
 
 ```python
->>> Indices.get_rsi_graph(df_rsi)  
+>>> indices.get_rsi_graph(df_rsi)  
 
 """
 This will return a plot of RSI against time and also save RSI plot in your working directory as 'rsi.png'
@@ -115,7 +115,7 @@ This will return a plot of RSI against time and also save RSI plot in your worki
 - #### Get Bollinger Bands and its plot
 
 ```python
->>> df_bb = Indices.get_bollinger_bands(price_data , 20, plot=True) 
+>>> df_bb = indices.get_bollinger_bands(price_data , 20, plot=True) 
 >>> df_bb.head()
         date    price     BB_upper   BB_lower
 0 2019-10-30  9205.73  9635.043581 -8428.5855
@@ -138,8 +138,9 @@ This will also save Bollingers bands plot in your working directory as 'bollinge
 
 ```python
 
->>> df_macd = Indices.get_moving_average_convergence_divergence(price_data, plot=True)
-"""This will return a pandas DataFrame and save EMA plot as 'macd.png' in working directory. 
+>>> df_macd = indices.get_moving_average_convergence_divergence(price_data, plot=True)
+"""
+This will return a pandas DataFrame and save EMA plot as 'macd.png' in working directory. 
 """"
 >>> df_macd.head()
         date    price       MACD
@@ -157,7 +158,7 @@ This will also save Bollingers bands plot in your working directory as 'bollinge
 - #### Get Simple Moving Average (SMA) and its plot
 
 ```python
->>> df_sma = Indices.get_simple_moving_average(price_data, 20, plot=True) 
+>>> df_sma = indices.get_simple_moving_average(price_data, 20, plot=True) 
 """This will return a pandas DataFrame and save EMA plot as 'sma.png' in working directory. 
 """"
 >>> df_sma.head()
@@ -176,7 +177,7 @@ This will also save Bollingers bands plot in your working directory as 'bollinge
 - ### Get Exponential Moving Average (EMA) and its plot
 
 ```python
->>> df_ema = Indices.get_exponential_moving_average(price_data, [20,70], plot=True)
+>>> df_ema = indices.get_exponential_moving_average(price_data, [20,70], plot=True)
 """This will return a pandas DataFrame and save EMA plot as 'ema.png' in working directory. 
 """"
 
