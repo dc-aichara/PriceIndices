@@ -60,7 +60,7 @@ from PriceIndices import MarketHistory, Indices
 
 ```python
 indices = Indices(df=price_data)
->>> df_bvol = indices.get_vola_index(price_data )  
+>>> df_bvol = indices.get_vola_index()  
 >>> df_bvol.head()
         date    price  BVOL_Index
 0 2019-10-29  9427.69    0.711107
@@ -87,7 +87,7 @@ This will return a plot of BVOL index against time also save volatility index pl
 
 ```python
 
->>> df_rsi = indices.get_rsi(price_data)   
+>>> df_rsi = indices.get_rsi()   
 
 >>> print(df_rsi.head())
         date    price       RSI_1  RS_Smooth      RSI_2
@@ -115,7 +115,7 @@ This will return a plot of RSI against time and also save RSI plot in your worki
 - #### Get Bollinger Bands and its plot
 
 ```python
->>> df_bb = indices.get_bollinger_bands(price_data , 20, plot=True) 
+>>> df_bb = indices.get_bollinger_bands(days=20, plot=True) 
 >>> df_bb.head()
         date    price     BB_upper   BB_lower
 0 2019-10-30  9205.73  9635.043581 -8428.5855
@@ -138,7 +138,7 @@ This will also save Bollingers bands plot in your working directory as 'bollinge
 
 ```python
 
->>> df_macd = indices.get_moving_average_convergence_divergence(price_data, plot=True)
+>>> df_macd = indices.get_moving_average_convergence_divergence(plot=True)
 """
 This will return a pandas DataFrame and save EMA plot as 'macd.png' in working directory. 
 """"
@@ -158,7 +158,7 @@ This will return a pandas DataFrame and save EMA plot as 'macd.png' in working d
 - #### Get Simple Moving Average (SMA) and its plot
 
 ```python
->>> df_sma = indices.get_simple_moving_average(price_data, 20, plot=True) 
+>>> df_sma = indices.get_simple_moving_average(days=20, plot=True) 
 """This will return a pandas DataFrame and save EMA plot as 'sma.png' in working directory. 
 """"
 >>> df_sma.head()
@@ -177,7 +177,7 @@ This will return a pandas DataFrame and save EMA plot as 'macd.png' in working d
 - ### Get Exponential Moving Average (EMA) and its plot
 
 ```python
->>> df_ema = indices.get_exponential_moving_average(price_data, [20,70], plot=True)
+>>> df_ema = indices.get_exponential_moving_average(periods=[20,70], plot=True)
 """This will return a pandas DataFrame and save EMA plot as 'ema.png' in working directory. 
 """"
 
