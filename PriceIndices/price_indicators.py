@@ -35,12 +35,9 @@ class Indices:
         """
         data = self.df.copy()
         data = data.sort_values(by=self.date_col).reset_index(drop=True)
-        ln_ratio_btc = pd.DataFrame(list(np.diff(np.log(data[self.price_col]))))
-        bvol_btc = pd.DataFrame(
-            ln_ratio_btc.rolling(volatile_period).std() * np.sqrt(365)
-        )
-        bvol_btc.columns = ["BVOL_Index"]
-        data = pd.concat([data, bvol_btc], join="inner", axis=1)
+        v = np.log(data[self.price_col]).diff().rolling(volatile_period).std() * np.sqrt(365)
+        df_bvol = pd.DataFrame(data={'BVOL_Index': v})
+        data = pd.concat([data, df_bvol], join="inner", axis=1)
         data = data.dropna()
         data = data.sort_values(by=self.date_col, ascending=False).reset_index(
             drop=True
@@ -114,14 +111,10 @@ class Indices:
             self.price_col
         ].shift(1)
         data.dropna(inplace=True)
-        data["gain"] = data["price_change"].apply(lambda x: x if x >= 0 else 0)
-
-        data["loss"] = data["price_change"].apply(
-            lambda x: abs(x) if x <= 0 else 0
-        )
+        data["gain"] = np.where(data["price_change"] >= 0, data["price_change"], 0)
+        data["loss"] = np.where(data["price_change"] <= 0, abs(data["price_change"]), 0)
 
         data["gain_average"] = data["gain"].rolling(14).mean()
-
         data["loss_average"] = data["loss"].rolling(14).mean()
 
         data["RS"] = data["gain_average"] / data["loss_average"]
