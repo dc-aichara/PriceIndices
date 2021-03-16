@@ -15,7 +15,7 @@ setuptools.setup(
     author="Dayal Chand Aichara",
     author_email="dc.aichara@gmail.com",
     url="https://github.com/dc-aichara/Price-Indices",
-    download_url="https://github.com/dc-aichara/PriceIndices/archive/v-1.3.0.tar.gz",
+    download_url="https://github.com/dc-aichara/PriceIndices/archive/v1.3.0.tar.gz",
     keywords=[
         "Volatility",
         "blockchain",
