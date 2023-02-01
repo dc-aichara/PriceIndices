@@ -1,6 +1,6 @@
 
 
-[![](https://img.shields.io/badge/PriceIndices-1.3.0-blue)](https://github.com/dc-aichara/PriceIndices)
+[![](https://img.shields.io/badge/PriceIndices-1.4.0-blue)](https://github.com/dc-aichara/PriceIndices)
 
 
 ## Development Environment
