@@ -1,8 +1,10 @@
-import pandas as pd
-import numpy as np
-from typing import List, Optional
-import matplotlib.pyplot as plt
 import warnings
+from pathlib import Path
+from typing import List, Optional
+
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
 
 warnings.filterwarnings("ignore")
 
@@ -13,46 +15,68 @@ class Indices:
     """
 
     def __init__(
-        self, df: pd.DataFrame, date_col: str = "date", price_col: str = "price"
+        self,
+        df: pd.DataFrame,
+        date_col: str = "date",
+        price_col: str = "price",
+        plot_dir: Optional[str] = "",
     ) -> None:
         self.df = df
         self.date_col = date_col
         self.price_col = price_col
+        self.plot_dir = Path(plot_dir)  # type: ignore
 
     def get_vola_index(
-        self, volatile_period: Optional[int] = 30
+        self,
+        volatile_period: Optional[int] = 30,
+        plot: Optional[bool] = False,
+        plot_name: Optional[str] = "vola_index.png",
+        show_plot: Optional[bool] = False,
     ) -> pd.DataFrame:
         """
-        Volatility Index is a measure of market's expectation of volatility over
-        the near term.
+        Volatility Index is a measure of market's expectation of volatility
+        over the near term.
         Volatility is often described as the "rate and magnitude of changes in
         prices" and in finance often referred to as risk.
         Reference:
             www.moneycontrol.com
+        Args:
+            volatile_period (int): Period to calculate volatile index.
+                                   Defulat to 30.
+            plot (bool): If plot bollinger bands
+            plot_name(str): Plot with ".png" extension.
+            show_plot (bool): True if you plot should be displayed.
 
         Returns:
             pd.DataFrame: Pandas DataFrame
         """
         data = self.df.copy()
         data = data.sort_values(by=self.date_col).reset_index(drop=True)
-        v = np.log(data[self.price_col]).diff().rolling(volatile_period).std() * np.sqrt(365)
-        df_bvol = pd.DataFrame(data={'BVOL_Index': v})
+        v = np.log(data[self.price_col]).diff().rolling(
+            volatile_period
+        ).std() * np.sqrt(365)
+        df_bvol = pd.DataFrame(data={"BVOL_Index": v})
         data = pd.concat([data, df_bvol], join="inner", axis=1)
         data = data.dropna()
         data = data.sort_values(by=self.date_col, ascending=False).reset_index(
             drop=True
         )
+        if plot is True:
+            self.get_vola_graph(data, plot_name, show_plot)
         return data
 
-    @staticmethod
     def get_vola_graph(
-        data: pd.DataFrame, output_path: Optional[str] = "bvol_index.png"
+        self,
+        data: pd.DataFrame,
+        plot_name: Optional[str] = "bvol_index.png",
+        show_plot: Optional[bool] = False,
     ) -> None:
         """
         Make a line graph of volatile index with respect to time
         Args:
             data(pd.DataFrame): Output of get_vola_index function
-            output_path(str): Path to save plot
+            plot_name(str): Plot with ".png" extension.
+            show_plot: True if you plot should be displayed.
         """
 
         fig, ax = plt.subplots(figsize=(14, 12))
@@ -80,10 +104,20 @@ class Indices:
         ax2.tick_params(axis="y", colors="b")
 
         plt.suptitle("Price  and  Volatility Index", color="red", fontsize=24)
-        plt.savefig(output_path, bbox_inches="tight", facecolor="orange")
-        plt.show()
+        plt.savefig(
+            self.plot_dir.joinpath(plot_name),  # type: ignore
+            bbox_inches="tight",
+            facecolor="orange",
+        )
+        if show_plot:
+            plt.show()
 
-    def get_rsi(self) -> pd.DataFrame:
+    def get_rsi(
+        self,
+        plot: Optional[bool] = False,
+        plot_name: Optional[str] = "rsi.png",
+        show_plot: Optional[bool] = False,
+    ) -> pd.DataFrame:
         """
         Type:
             Momentum indicator
@@ -101,6 +135,12 @@ class Indices:
 
         Reference:
                     https://economictimes.indiatimes.com/
+
+        Args:
+            plot (bool): If plot bollinger bands
+            plot_name(str): Plot with ".png" extension.
+            show_plot (bool): True if you plot should be displayed.
+
         Returns:
             pd.DataFrame: Pandas DataFrame with RSI values
 
@@ -111,8 +151,12 @@ class Indices:
             self.price_col
         ].shift(1)
         data.dropna(inplace=True)
-        data["gain"] = np.where(data["price_change"] >= 0, data["price_change"], 0)
-        data["loss"] = np.where(data["price_change"] <= 0, abs(data["price_change"]), 0)
+        data["gain"] = np.where(
+            data["price_change"] >= 0, data["price_change"], 0
+        )
+        data["loss"] = np.where(
+            data["price_change"] <= 0, abs(data["price_change"]), 0
+        )
 
         data["gain_average"] = data["gain"].rolling(14).mean()
         data["loss_average"] = data["loss"].rolling(14).mean()
@@ -142,14 +186,22 @@ class Indices:
         data = data.sort_values(by=self.date_col, ascending=False).reset_index(
             drop=True
         )
+        if plot is True:
+            self.get_rsi_graph(data, plot_name, show_plot)
         return data
 
-    @staticmethod
-    def get_rsi_graph(data: pd.DataFrame) -> None:
+    def get_rsi_graph(
+        self,
+        data: pd.DataFrame,
+        plot_name: Optional[str] = "rsi.png",
+        show_plot: Optional[bool] = False,
+    ) -> None:
         """
         Plot RSI against date and price
         Args:
             data(pd.DataFrame): Output of get_rsi function.
+            plot_name(str): Plot with ".png" extension.
+            show_plot: True if you plot should be displayed.
 
 
         """
@@ -193,14 +245,20 @@ class Indices:
         plt.suptitle(
             "Price  and  Relative  Strength Index", color="red", fontsize=24
         )
-        plt.savefig("rsi.png", bbox_inches="tight", facecolor="orange")
-        plt.show()
+        plt.savefig(
+            self.plot_dir.joinpath(plot_name),  # type: ignore
+            bbox_inches="tight",
+            facecolor="orange",
+        )
+        if show_plot:
+            plt.show()
 
     def get_bollinger_bands(
         self,
         days: Optional[int] = 20,
         plot: Optional[bool] = False,
-        out_path: Optional[str] = "bollinger_bands.png",
+        plot_name: Optional[str] = "bollinger_bands.png",
+        show_plot: Optional[bool] = False,
     ) -> pd.DataFrame:
         """
         Type:
@@ -221,7 +279,8 @@ class Indices:
         Args:
             days (int): Number of days to calculate moving average
             plot (bool): If plot bollinger bands
-            out_path (str): Save path for plot
+            plot_name(str): Plot with ".png" extension.
+            show_plot: True if you plot should be displayed.
 
         Returns:
             pd.DataFrame: A pandas DataFrame and save a plot to given path.
@@ -237,7 +296,7 @@ class Indices:
         data = data.sort_values(by=self.date_col, ascending=False).reset_index(
             drop=True
         )
-        while plot:
+        if plot:
             fig, ax = plt.subplots(figsize=(16, 12))
             plt.plot(data[self.date_col], data["BB_upper"], color="g")
             plt.plot(data[self.date_col], data["BB_lower"], color="g")
@@ -250,14 +309,19 @@ class Indices:
             fig.set_facecolor("yellow")
             plt.grid()
             plt.savefig(
-                out_path, bbox_inches="tight", facecolor="orange",
+                self.plot_dir.joinpath(plot_name),  # type: ignore
+                bbox_inches="tight",
+                facecolor="orange",
             )
-            plt.show()
-            break
+            if show_plot:
+                plt.show()
         return data
 
     def get_moving_average_convergence_divergence(
-        self, plot: Optional[bool] = False, out_path: Optional[str] = "macd.png"
+        self,
+        plot: Optional[bool] = False,
+        plot_name: Optional[str] = "macd.png",
+        show_plot: Optional[bool] = False,
     ) -> pd.DataFrame:
         """
         Type
@@ -268,13 +332,16 @@ class Indices:
 
         What it signals
             Rising Moving Average Convergence Divergence (MACD) indicates an
-            upward price trend and falling MACD indicates a downward price trend.
+            upward price trend and falling MACD indicates a downward price
+            trend.
 
         Reference:
             https://economictimes.indiatimes.com/
         Args:
             plot (bool): If plot bollinger bands
-            out_path (str): Save path for plot
+            plot_name(str): Plot with ".png" extension.
+            show_plot: True if you plot should be displayed.
+
 
         Returns:
             pd.DataFrame: Pandas DataFrame with MACD values
@@ -287,7 +354,7 @@ class Indices:
         data.drop(["EMA_12", "EMA_26"], axis=1, inplace=True)
         data = data.dropna()
 
-        while plot:
+        if plot:
             fig, ax = plt.subplots(figsize=(14, 9))
             plt.plot(
                 data[self.date_col],
@@ -300,24 +367,30 @@ class Indices:
             plt.title("Price and MACD Plot", fontsize=28, color="b")
             plt.xlabel("Time", color="b", fontsize=19)
             plt.ylabel("Price", color="b", fontsize=19)
-            plt.savefig(out_path, bbox_inches="tight", facecolor="orange")
+            plt.savefig(
+                self.plot_dir.joinpath(plot_name),  # type: ignore
+                bbox_inches="tight",
+                facecolor="orange",
+            )
             fig.set_facecolor("orange")
-            plt.show()
-            break
+            if show_plot:
+                plt.show()
         return data
 
     def get_simple_moving_average(
         self,
         days: Optional[int] = 15,
         plot: Optional[bool] = False,
-        out_path: Optional[str] = "sma.png",
-    ):
+        plot_name: Optional[str] = "sma.png",
+        show_plot: Optional[bool] = False,
+    ) -> pd.DataFrame:
         """
         Simple moving average of given days
         Args:
             days (int): Number of days to calculate SMA
             plot (bool): If plot bollinger bands
-            out_path (str): Save path for plot
+            plot_name(str): Plot with ".png" extension.
+            show_plot: True if you plot should be displayed.
 
         Returns:
             pd.DataFrame: Pandas DataFrame with SMA values
@@ -331,7 +404,7 @@ class Indices:
         data = data.sort_values(by=self.date_col, ascending=False).reset_index(
             drop=True
         )
-        while plot:
+        if plot:
             fig, ax = plt.subplots(figsize=(14, 9))
             plt.plot(
                 data[self.date_col],
@@ -344,17 +417,22 @@ class Indices:
             plt.title("Price and SMA Plot", fontsize=28, color="b")
             plt.xlabel("Time", color="b", fontsize=19)
             plt.ylabel("Price", color="b", fontsize=19)
-            plt.savefig(out_path, bbox_inches="tight", facecolor="orange")
+            plt.savefig(
+                self.plot_dir.joinpath(plot_name),  # type: ignore
+                bbox_inches="tight",
+                facecolor="orange",
+            )
             fig.set_facecolor("orange")
-            plt.show()
-            break
+            if show_plot:
+                plt.show()
         return data
 
     def get_exponential_moving_average(
         self,
         periods: List[int] = [20],
         plot: Optional[bool] = False,
-        out_path: Optional[str] = "ema.png",
+        plot_name: Optional[str] = "ema.png",
+        show_plot: Optional[bool] = False,
     ):
         """
         The EMA is a moving average that places a greater weight and
@@ -370,7 +448,8 @@ class Indices:
             periods (list): List of period to calculate EMA
             days (int): Number of days to calculate SMA
             plot (bool): If plot bollinger bands
-            out_path (str): Save path for plot
+            plot_name(str): Plot with ".png" extension.
+            show_plot: True if you plot should be displayed.
 
         Returns:
             pd.DataFrame: Pandas DataFrame with EMA values
@@ -380,7 +459,7 @@ class Indices:
             data["EMA_{}".format(period)] = (
                 data[self.price_col].ewm(span=period, adjust=False).mean()
             )
-        while plot:
+        if plot is True:
             fig, ax = plt.subplots(figsize=(14, 9))
             plt.plot(
                 data[self.date_col],
@@ -398,8 +477,12 @@ class Indices:
             plt.title("Price and EMA Plot", fontsize=28, color="b")
             plt.xlabel("Time", color="b", fontsize=19)
             plt.ylabel("Price/EMA", color="b", fontsize=19)
-            plt.savefig(out_path, bbox_inches="tight", facecolor="orange")
+            plt.savefig(
+                self.plot_dir.joinpath(plot_name),  # type: ignore
+                bbox_inches="tight",
+                facecolor="orange",
+            )
             fig.set_facecolor("orange")
-            plt.show()
-            break
+            if show_plot is True:
+                plt.show()
         return data

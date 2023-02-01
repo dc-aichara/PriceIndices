@@ -1,8 +1,22 @@
 # PriceIndices ChangeLog
 
+## Version 
+
+## 1.4.0
+
+* Refactored code
+* Adapted poetry for development
+* Updated documentation.
+
+## Version 1.3.0
+
+* Optimize Indicators calculations.
+* Minor bug fixes.
+* Refactored code.
+
 ## Version 1.2.1
 
-- Fixed documentation
+- Fixed documentation.
 
 ## Version 1.2.0
 
