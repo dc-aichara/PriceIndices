@@ -1,19 +1,20 @@
-import requests
+import warnings
+from typing import Optional
+
 import pandas as pd
-from datetime import datetime
-from typing import Any, Optional
+import requests
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
-import warnings
 
 warnings.filterwarnings("ignore")
 
 
 class MarketHistory(object):
-    __Crypto_Market_Base_URL = "https://web-api.coinmarketcap.com/v1/cryptocurrency/ohlcv/historical?convert=USD&slug="
+    __Crypto_Market_Base_URL = "https://web-api.coinmarketcap.com/v1/cryptocurrency/ohlcv/historical?convert=USD&slug="  # noqa
 
-    def __init__(self,
-                 base_url: Optional[str] = __Crypto_Market_Base_URL) -> None:
+    def __init__(
+        self, base_url: Optional[str] = __Crypto_Market_Base_URL
+    ) -> None:
         self.base_url = base_url
         self.request_timeout = 120
 
@@ -23,7 +24,7 @@ class MarketHistory(object):
         )
         self.session.mount("http://", HTTPAdapter(max_retries=retries))
 
-    def __request(self, url: str) -> pd.DataFrame:
+    def __request(self, url: str) -> Optional[pd.DataFrame]:
         try:
             response = self.session.get(url, timeout=self.request_timeout)
             response.raise_for_status()
@@ -39,10 +40,10 @@ class MarketHistory(object):
             del df["timestamp"]
             return df
         except Exception as e:
-            raise
+            raise e
 
     def get_history(
-            self, coin_id: str, start_date: str, end_date: str
+        self, coin_id: str, start_date: str, end_date: str
     ) -> Optional[pd.DataFrame]:
         """
         Get historical market data of a cryptocurrency from CoinMarketCap.
@@ -63,12 +64,14 @@ class MarketHistory(object):
         except Exception as e:
             print(e)
             print(
-                'Please, check inputs. Coin id, and dates are strings. Date '
+                "Please, check inputs. Coin id, and dates are strings. Date "
                 'format is "YYYY-MM-DD"'
             )
+            return None
 
-    def get_price(self, coin_id: str, start_date: str, end_date: str) -> \
-            Optional[pd.DataFrame]:
+    def get_price(
+        self, coin_id: str, start_date: str, end_date: str
+    ) -> Optional[pd.DataFrame]:
         """
         Get historical market price data (closing price) of a cryptocurrency
         from CoinMarketCap.
@@ -87,12 +90,14 @@ class MarketHistory(object):
 
         try:
             df = self.__request(url)
+            assert type(df) == pd.DataFrame
             df = df[["date", "close"]]
             df.columns = ["date", "price"]
             return df
         except Exception as e:
             print(
                 e,
-                'Please, check inputs Coin id, and dates are strings. Date '
+                "Please, check inputs Coin id, and dates are strings. Date "
                 'format is "YYYY-MM-DD"',
             )
+            return None
