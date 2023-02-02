@@ -1,7 +1,11 @@
 
 
-[![](https://img.shields.io/badge/PriceIndices-1.4.0-blue)](https://github.com/dc-aichara/PriceIndices)
-
+[![PyPI Latest Release](https://img.shields.io/pypi/v/PriceIndices.svg)](https://pypi.org/project/PriceIndices/)
+[![Coverage](https://codecov.io/github/dc-aichara/PriceIndices/coverage.svg?branch=master)](https://codecov.io/gh/dc-aichara/PriceIndices)
+[![License](https://img.shields.io/pypi/l/PriceIndices.svg)](https://github.com/dc-aichara/PriceIndices/blob/master/LICENSE)
+[![Downloads](https://static.pepy.tech/personalized-badge/priceindices?period=month&units=international_system&left_color=gray&right_color=blue&left_text=PyPI%20downloads%20per%20month)](https://pepy.tech/project/priceindices)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Imports: isort](https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&labelColor=ef8336)](https://pycqa.github.io/isort/)
 
 ## Development Environment
 
